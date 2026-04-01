@@ -262,12 +262,9 @@ tailwind.config = {
     0%, 100% { height: 10px; opacity: 0.3; }
     50% { height: 30px; opacity: 1; }
   }
-  /* Wave bars explode on beat */
-  .wave-hit .wave-bar {
-    animation: none !important;
-    height: 35px !important;
-    opacity: 1 !important;
-    transition: height 0.35s ease-out, opacity 0.35s ease-out;
+  /* Wave bars: smooth return after beat hit */
+  .wave-bar {
+    transition: height 0.3s ease-out, opacity 0.3s ease-out;
   }
 
   /* ===== SILENCE LETTER SPLIT ===== */
@@ -377,48 +374,31 @@ tailwind.config = {
     box-shadow: inset 0 0 150px 60px rgba(0,0,0,0.6);
   }
 
-  /* KICK — full electric slam: blue layer rips apart */
+  /* KICK — electric shock: cyan layer splits out */
   .glitch-kick::before {
     animation: none !important;
-    opacity: 1 !important;
-    transform: translate(-8px, -4px) skewX(3deg) !important;
-    color: #00FFFF !important;
-    clip-path: inset(0 0 35% 0) !important;
-    transition: opacity 0.45s ease-out, transform 0.45s ease-out;
+    opacity: 0.8 !important;
+    transform: translate(-4px, -1px) !important;
+    transition: opacity 0.4s ease-out, transform 0.4s ease-out;
   }
   .glitch-kick::after {
     animation: none !important;
-    opacity: 0.8 !important;
-    transform: translate(7px, 3px) skewX(-2deg) !important;
-    color: #FF2D2D !important;
-    clip-path: inset(35% 0 0 0) !important;
-    transition: opacity 0.45s ease-out, transform 0.45s ease-out;
+    opacity: 0.6 !important;
+    transform: translate(3px, 2px) !important;
+    transition: opacity 0.4s ease-out, transform 0.4s ease-out;
   }
-  /* SNARE — tight horizontal rip */
+  /* SNARE — tighter split */
   .glitch-snare::before {
     animation: none !important;
-    opacity: 0.85 !important;
-    transform: translate(5px, -1px) skewX(-2deg) !important;
-    color: #00FFFF !important;
-    clip-path: inset(20% 0 20% 0) !important;
-    transition: opacity 0.2s ease-out, transform 0.2s ease-out;
+    opacity: 0.6 !important;
+    transform: translate(2px, -1px) !important;
+    transition: opacity 0.25s ease-out, transform 0.25s ease-out;
   }
   .glitch-snare::after {
     animation: none !important;
-    opacity: 0.6 !important;
-    transform: translate(-4px, 1px) skewX(1.5deg) !important;
-    color: #FF2D2D !important;
-    transition: opacity 0.2s ease-out, transform 0.2s ease-out;
-  }
-
-  /* Kick glow on name — text-shadow via CSS, not GSAP */
-  .glitch-kick {
-    text-shadow: 0 0 40px rgba(255,45,45,0.6), 0 0 80px rgba(255,45,45,0.3), 0 0 10px rgba(0,255,255,0.2) !important;
-    transition: text-shadow 0.5s ease-out;
-  }
-  .glitch-snare {
-    text-shadow: 0 0 15px rgba(0,255,255,0.3), 0 0 30px rgba(255,255,255,0.15) !important;
-    transition: text-shadow 0.3s ease-out;
+    opacity: 0.4 !important;
+    transform: translate(-2px, 1px) !important;
+    transition: opacity 0.25s ease-out, transform 0.25s ease-out;
   }
 
   /* ===== PHOTO ===== */
@@ -1203,13 +1183,15 @@ window.onYouTubeIframeAPIReady = function() {
 };
 
 // ==================
-// BASS SYSTEM — CSS class toggles + minimal GSAP for overlay only
+// BASS SYSTEM — original effects, reusable timelines
 // ==================
 (function() {
   var heroName = document.getElementById('hero-name');
   var hero = document.getElementById('hero');
   var overlay = document.getElementById('bass-overlay');
   var vignette = document.getElementById('bass-vignette');
+  var ytOverlay = document.querySelector('#yt-container .bg-gradient-to-b');
+  var waveBars = document.querySelectorAll('.wave-bar');
   if (!heroName || !hero) return;
 
   var bpm = 128;
@@ -1219,51 +1201,91 @@ window.onYouTubeIframeAPIReady = function() {
   var bassInterval;
   var glitchTimer = null;
 
-  // KICK — heavy slam: compress hard, bounce fat, red flash
+  // --- KICK timeline: red pyro flash + vignette + name compress + bloom + hero push ---
   var kickTL = gsap.timeline({ paused: true });
+  // Screen red flash
   kickTL.fromTo(overlay, { opacity: 0.7 }, { opacity: 0, duration: 0.5, ease: 'power3.in' }, 0);
-  kickTL.fromTo(vignette, { opacity: 0.5 }, { opacity: 0, duration: 0.55, ease: 'power2.out' }, 0);
-  // Slam down hard then elastic bounce back up
+  // Vignette tunnel vision
+  kickTL.fromTo(vignette, { opacity: 0.5 }, { opacity: 0, duration: 0.6, ease: 'power2.out' }, 0);
+  // Hero section pushes down
+  kickTL.fromTo(hero, { y: 3 }, { y: 0, duration: 0.4, ease: 'elastic.out(1, 0.4)' }, 0);
+  // Name compress + elastic rebound
   kickTL.fromTo(heroName,
-    { scaleY: 0.92, scaleX: 1.03, y: 6 },
-    { scaleY: 1, scaleX: 1, y: 0, duration: 0.6, ease: 'elastic.out(1.1, 0.3)' }, 0);
-  // Whole hero section pushes down
-  kickTL.fromTo(hero, { y: 4 }, { y: 0, duration: 0.5, ease: 'elastic.out(1, 0.4)' }, 0);
+    { scaleY: 0.97, scaleX: 1.01 },
+    { scaleY: 1, scaleX: 1, duration: 0.5, ease: 'elastic.out(1, 0.3)' }, 0);
+  // Text-shadow bloom — slow decay like real stage light
+  kickTL.fromTo(heroName,
+    { textShadow: '0 0 60px rgba(255,45,45,0.8), 0 0 120px rgba(255,45,45,0.4), 0 4px 20px rgba(0,0,0,0.5)' },
+    { textShadow: '0 0 0px rgba(255,45,45,0), 0 0 0px rgba(255,45,45,0), 0 0 0px rgba(0,0,0,0)', duration: 1.2, ease: 'power2.in' }, 0);
+  // Video overlay darken on impact
+  if (ytOverlay) {
+    kickTL.fromTo(ytOverlay, { opacity: 0.9 }, { opacity: 1, duration: 0.4 }, 0);
+  }
 
-  // SNARE — sharp whip-crack: horizontal shake + snap back
+  // --- SNARE timeline: white flash + micro-shake + vignette ---
   var snareTL = gsap.timeline({ paused: true });
+  // White flash on letters
   snareTL.fromTo(heroName,
-    { x: 4, skewX: -1.5, scaleX: 0.98 },
-    { x: 0, skewX: 0, scaleX: 1, duration: 0.25, ease: 'elastic.out(1, 0.35)' }, 0);
-  snareTL.fromTo(vignette, { opacity: 0.25 }, { opacity: 0, duration: 0.35, ease: 'power2.out' }, 0);
-  snareTL.fromTo(overlay, { opacity: 0.2 }, { opacity: 0, duration: 0.25, ease: 'power2.out' }, 0);
+    { color: '#FFFFFF', textShadow: '0 0 20px rgba(255,255,255,0.4)' },
+    { color: '#F0EDE8', textShadow: '0 0 0px rgba(255,255,255,0)', duration: 0.5, ease: 'power2.in' }, 0);
+  // Micro-shake like snare rattle
+  snareTL.fromTo(heroName, { x: 2 }, { x: -1.5, duration: 0.03 }, 0);
+  snareTL.to(heroName, { x: 0, duration: 0.15, ease: 'power2.out' }, 0.06);
+  // Vignette light pulse
+  snareTL.fromTo(vignette, { opacity: 0.2 }, { opacity: 0, duration: 0.35, ease: 'power2.out' }, 0);
 
-  var waveWrap = document.querySelector('.flex.items-end.justify-end');
-  var waveTimer = null;
+  // --- GHOST timeline: barely perceptible breathing ---
+  var ghostTL = gsap.timeline({ paused: true });
+  ghostTL.fromTo(heroName,
+    { scaleY: 1.002 },
+    { scaleY: 1, duration: 0.25, ease: 'power1.out' }, 0);
 
   function clearGlitch() {
     heroName.classList.remove('glitch-kick', 'glitch-snare');
-    if (waveWrap) waveWrap.classList.remove('wave-hit');
   }
 
   function kick() {
     kickTL.invalidate().restart();
-    // Electric shock — blue layer rips apart via CSS class
+    // Glitch: blue layer splits on impact
     clearGlitch();
     heroName.classList.add('glitch-kick');
-    if (waveWrap) waveWrap.classList.add('wave-hit');
     clearTimeout(glitchTimer);
     glitchTimer = setTimeout(clearGlitch, 400);
+    // Wave bars explode
+    waveBars.forEach(function(bar, i) {
+      bar.style.height = (18 + (i * 3) % 18) + 'px';
+      bar.style.opacity = '1';
+    });
+    setTimeout(function() {
+      waveBars.forEach(function(bar) {
+        bar.style.height = '';
+        bar.style.opacity = '';
+      });
+    }, 350);
   }
 
   function snare() {
     snareTL.invalidate().restart();
-    // Tighter electric snap
+    // Glitch: tighter electric snap
     clearGlitch();
     heroName.classList.add('glitch-snare');
-    if (waveWrap) waveWrap.classList.add('wave-hit');
     clearTimeout(glitchTimer);
-    glitchTimer = setTimeout(clearGlitch, 220);
+    glitchTimer = setTimeout(clearGlitch, 250);
+    // Wave bars medium hit
+    waveBars.forEach(function(bar, i) {
+      bar.style.height = (10 + (i * 2) % 10) + 'px';
+      bar.style.opacity = '0.8';
+    });
+    setTimeout(function() {
+      waveBars.forEach(function(bar) {
+        bar.style.height = '';
+        bar.style.opacity = '';
+      });
+    }, 250);
+  }
+
+  function ghost() {
+    ghostTL.invalidate().restart();
   }
 
   function beatLoop() {
@@ -1271,7 +1293,7 @@ window.onYouTubeIframeAPIReady = function() {
     var pos = count % 4;
     if (pos === 1) kick();
     else if (pos === 3) snare();
-    // ghost on 2,4: no animation = no CPU cost
+    else ghost();
   }
 
   var bassObserver = new IntersectionObserver(function(entries) {
@@ -1282,7 +1304,8 @@ window.onYouTubeIframeAPIReady = function() {
       running = false;
       clearInterval(bassInterval);
       clearGlitch();
-      gsap.set(heroName, { scaleY: 1, scaleX: 1, x: 0 });
+      gsap.set(heroName, { scaleY: 1, scaleX: 1, x: 0, color: '#F0EDE8', textShadow: 'none' });
+      gsap.set(hero, { y: 0 });
       gsap.set(overlay, { opacity: 0 });
       gsap.set(vignette, { opacity: 0 });
     }
