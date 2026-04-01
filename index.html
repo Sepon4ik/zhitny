@@ -1,0 +1,2010 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VITALIY ZHITNIY — Concert Director to Serial Investor</title>
+<meta name="description" content="Vitaliy Zhitniy. Ex concert director of Max Korzh (50K-capacity stadium tours). Serial investor: 15+ tech startups, Amazon FBA, Wildberries. Energy decides. Networks win.">
+
+<!-- ANCHOR OBJECT: Пиротехнический выстрел на концерте — момент когда 50K человек кричат, ослепляющая вспышка, красный дым, басы прожигают грудь. Диктует: резкие контрасты, ослепляющие вспышки белого на чёрном, агрессивные красные, текст как афиша стадиона -->
+<!-- CREATIVE COLLISION: Carson (content dictates form — текст о концертах ФИЗИЧЕСКИ трясёт экран) × Sagmeister (pyro flash — дизайн вспыхивает и гаснет) -->
+<!-- CARSON PROVOCATION: Layer collision — элементы налезают друг на друга, текст поверх фото, числа за пределами контейнеров -->
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Dela+Gothic+One&family=Oswald:wght@400;500;700&family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+        dark: '#0A0A0A',
+        accent: '#FF2D2D',
+        warm: '#F0EDE8',
+      },
+      fontFamily: {
+        display: ['Dela Gothic One', 'sans-serif'],
+        heading: ['Oswald', 'sans-serif'],
+        body: ['Space Grotesk', 'sans-serif'],
+        mono: ['Space Mono', 'monospace'],
+      }
+    }
+  }
+}
+</script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.1.18/dist/lenis.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/split-type@0.3.4/umd/index.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vanta/dist/vanta.net.min.js"></script>
+
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Space Grotesk', sans-serif;
+    background: #0A0A0A;
+    color: #F0EDE8;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+  ::selection { background: #FF2D2D; color: #000; }
+
+  /* Grain */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0.07;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  /* ===== INTRO FLASH ===== */
+  #intro-flash {
+    position: fixed;
+    inset: 0;
+    z-index: 10000;
+    background: #FF2D2D;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+  }
+  #intro-flash span {
+    font-family: 'Dela Gothic One', sans-serif;
+    font-size: clamp(6rem, 20vw, 22rem);
+    color: #0A0A0A;
+    letter-spacing: -0.02em;
+    line-height: 1;
+  }
+
+  /* ===== GLITCH TEXT ===== */
+  .glitch {
+    position: relative;
+  }
+  .glitch::before,
+  .glitch::after {
+    content: attr(data-text);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+  }
+  .glitch::before {
+    color: #00FFFF;
+    clip-path: inset(0 0 60% 0);
+    transform: translate(-3px, -2px);
+    opacity: 0;
+    animation: glitchBefore 6s infinite linear alternate-reverse;
+    will-change: opacity, transform;
+  }
+  .glitch::after {
+    color: #FF2D2D;
+    clip-path: inset(60% 0 0 0);
+    transform: translate(3px, 2px);
+    opacity: 0;
+    animation: glitchAfter 6s infinite linear alternate-reverse;
+    will-change: opacity, transform;
+  }
+  @keyframes glitchBefore {
+    0%, 90% { opacity: 0; }
+    91% { opacity: 0.8; transform: translate(-4px, -1px); }
+    93% { opacity: 0; }
+    95% { opacity: 0.6; transform: translate(2px, -3px); }
+    97% { opacity: 0; }
+  }
+  @keyframes glitchAfter {
+    0%, 88% { opacity: 0; }
+    89% { opacity: 0.7; transform: translate(3px, 2px); }
+    91% { opacity: 0; }
+    94% { opacity: 0.5; transform: translate(-2px, 1px); }
+    96% { opacity: 0; }
+  }
+
+  /* ===== SCANLINES ===== */
+  .scanlines {
+    position: relative;
+  }
+  .scanlines::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.04) 2px, rgba(0,0,0,0.04) 4px);
+    z-index: 2;
+  }
+
+  /* ===== MARQUEE ===== */
+  .marquee-track {
+    display: flex;
+    width: max-content;
+    animation: marq 20s linear infinite;
+    will-change: transform;
+  }
+  @keyframes marq {
+    100% { transform: translateX(-50%); }
+  }
+  .marquee-track-reverse {
+    display: flex;
+    width: max-content;
+    animation: marqReverse 25s linear infinite;
+    will-change: transform;
+  }
+  @keyframes marqReverse {
+    0% { transform: translateX(-50%); }
+    100% { transform: translateX(0); }
+  }
+
+  /* ===== FLOATING DECORATIVE ELEMENTS ===== */
+  .deco-cross {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    pointer-events: none;
+    opacity: 0.15;
+  }
+  .deco-cross::before, .deco-cross::after {
+    content: '';
+    position: absolute;
+    background: #FF2D2D;
+  }
+  .deco-cross::before {
+    width: 100%;
+    height: 2px;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+  .deco-cross::after {
+    width: 2px;
+    height: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  .deco-dot {
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #FF2D2D;
+    pointer-events: none;
+    opacity: 0.2;
+  }
+
+  .deco-line {
+    position: absolute;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255,45,45,0.3), transparent);
+    pointer-events: none;
+  }
+
+  .deco-bracket {
+    position: absolute;
+    font-family: 'Space Mono', monospace;
+    font-size: 6rem;
+    color: rgba(255,45,45,0.04);
+    pointer-events: none;
+    line-height: 1;
+  }
+
+  /* ===== RED SECTION DIVIDER ===== */
+  .section-divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent 0%, rgba(255,45,45,0.4) 20%, rgba(255,45,45,0.4) 80%, transparent 100%);
+    position: relative;
+  }
+  .section-divider::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: -3px;
+    width: 7px;
+    height: 7px;
+    background: #FF2D2D;
+    transform: translateX(-50%) rotate(45deg);
+  }
+
+  /* ===== PYRO BURST (CSS particles) ===== */
+  .pyro-container {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 1;
+  }
+  .pyro-particle {
+    position: absolute;
+    width: 3px;
+    height: 3px;
+    background: #FF2D2D;
+    border-radius: 50%;
+    opacity: 0;
+  }
+
+  /* ===== WAVEFORM BAR ===== */
+  .wave-bar {
+    display: inline-block;
+    width: 3px;
+    margin: 0 1px;
+    background: #FF2D2D;
+    border-radius: 1px;
+    animation: waveAnim 1.2s ease-in-out infinite;
+  }
+  @keyframes waveAnim {
+    0%, 100% { height: 10px; opacity: 0.3; }
+    50% { height: 30px; opacity: 1; }
+  }
+
+  /* ===== SILENCE LETTER SPLIT ===== */
+  .silence-char {
+    display: inline-block;
+    opacity: 0;
+    transform: translateY(100px) rotate(15deg);
+  }
+
+  /* ===== NUMBER FLASH ===== */
+  .number-flash {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at center, rgba(255,45,45,0.15) 0%, transparent 70%);
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  /* ===== PORTFOLIO GLITCH HOVER ===== */
+  .portfolio-row {
+    position: relative;
+    overflow: hidden;
+  }
+  .portfolio-row::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 0;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,45,45,0.06), transparent);
+    transition: width 0.6s ease;
+    pointer-events: none;
+  }
+  .portfolio-row:hover::before {
+    width: 100%;
+  }
+  .portfolio-row::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 0;
+    height: 2px;
+    background: #FF2D2D;
+    transition: width 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    pointer-events: none;
+  }
+  .portfolio-row:hover::after {
+    width: 100%;
+  }
+
+  /* ===== SCRUB WORD ENHANCED ===== */
+  .scrub-word {
+    transition: color 0.3s, text-shadow 0.3s, transform 0.3s;
+  }
+  .scrub-word.lit {
+    text-shadow: 0 0 30px rgba(255,45,45,0.5), 0 0 60px rgba(255,45,45,0.2);
+    transform: scale(1.03);
+  }
+
+  /* ===== CTA SPLIT ===== */
+  .cta-char {
+    display: inline-block;
+    opacity: 0;
+  }
+
+  /* ===== LABEL STYLE (mono accents) ===== */
+  .label-mono {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: rgba(240,237,232,0.2);
+  }
+
+  /* ===== COUNTER GLOW ===== */
+  @keyframes counterGlow {
+    0% { text-shadow: none; }
+    50% { text-shadow: 0 0 60px rgba(255,45,45,0.6), 0 0 120px rgba(255,45,45,0.3); }
+    100% { text-shadow: none; }
+  }
+
+  /* ===== BASS SYSTEM ===== */
+  .pulse-letter {
+    display: inline-block;
+  }
+
+  /* Full-screen bass overlay — flashes red on kick */
+  #bass-overlay {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 9998;
+    opacity: 0;
+    background: radial-gradient(ellipse at center bottom, rgba(255,45,45,0.25) 0%, rgba(255,0,0,0.05) 40%, transparent 70%);
+    mix-blend-mode: screen;
+  }
+
+  /* Vignette that contracts on bass */
+  #bass-vignette {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 9997;
+    opacity: 0;
+    box-shadow: inset 0 0 150px 60px rgba(0,0,0,0.6);
+  }
+
+  /* ===== PHOTO ===== */
+  .photo-brutal {
+    clip-path: polygon(0 0, 100% 0, 100% 85%, 92% 100%, 0 95%);
+  }
+  .photo-brutal img {
+    filter: grayscale(0.5) contrast(1.3) brightness(0.9);
+    mix-blend-mode: luminosity;
+  }
+
+  /* ===== HORIZONTAL BAND (concert wristband motif) ===== */
+  .wristband {
+    height: 4px;
+    background: linear-gradient(90deg, transparent 0%, #FF2D2D 20%, #FF2D2D 80%, transparent 100%);
+  }
+
+  /* Reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
+    #intro-flash { display: none !important; }
+  }
+
+  @media (max-width: 768px) {
+    .desktop-only { display: none !important; }
+  }
+
+  /* ===== CONCERT ATMOSPHERE BACKGROUNDS ===== */
+  .concert-smoke {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+  }
+  .concert-smoke::before {
+    content: '';
+    position: absolute;
+    width: 200%;
+    height: 200%;
+    top: -50%;
+    left: -50%;
+    background: radial-gradient(ellipse at 30% 50%, rgba(255,45,45,0.06) 0%, transparent 50%),
+                radial-gradient(ellipse at 70% 30%, rgba(255,45,45,0.04) 0%, transparent 40%),
+                radial-gradient(ellipse at 50% 80%, rgba(255,100,50,0.03) 0%, transparent 45%);
+    animation: smokeFloat 20s ease-in-out infinite alternate;
+    will-change: transform;
+  }
+  @keyframes smokeFloat {
+    0% { transform: translate(0, 0) rotate(0deg); }
+    100% { transform: translate(-5%, 3%) rotate(3deg); }
+  }
+
+  .spotlight-sweep {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+  }
+  .spotlight-sweep::before {
+    content: '';
+    position: absolute;
+    width: 40%;
+    height: 200%;
+    top: -50%;
+    background: linear-gradient(90deg, transparent 0%, rgba(255,45,45,0.03) 50%, transparent 100%);
+    animation: spotlightMove 12s ease-in-out infinite alternate;
+    will-change: transform;
+  }
+  @keyframes spotlightMove {
+    0% { left: -40%; transform: skewX(-15deg); }
+    100% { left: 100%; transform: skewX(-15deg); }
+  }
+
+  .crowd-dots {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 120px;
+    pointer-events: none;
+    z-index: 0;
+    background:
+      radial-gradient(circle 2px, rgba(255,45,45,0.15) 0%, transparent 100%) 10px 80px,
+      radial-gradient(circle 1.5px, rgba(255,255,255,0.05) 0%, transparent 100%) 30px 90px,
+      radial-gradient(circle 2px, rgba(255,45,45,0.1) 0%, transparent 100%) 60px 75px,
+      radial-gradient(circle 1px, rgba(255,255,255,0.08) 0%, transparent 100%) 90px 95px,
+      radial-gradient(circle 2px, rgba(255,45,45,0.12) 0%, transparent 100%) 120px 85px,
+      radial-gradient(circle 1.5px, rgba(255,255,255,0.06) 0%, transparent 100%) 150px 70px,
+      radial-gradient(circle 2px, rgba(255,45,45,0.08) 0%, transparent 100%) 180px 100px;
+    background-size: 200px 120px;
+    opacity: 0.6;
+    mask-image: linear-gradient(to top, black 0%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to top, black 0%, transparent 100%);
+  }
+
+  .stage-glow {
+    position: absolute;
+    bottom: -30%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80%;
+    height: 60%;
+    background: radial-gradient(ellipse at center bottom, rgba(255,45,45,0.08) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .laser-grid {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+    opacity: 0.03;
+    background-image:
+      linear-gradient(0deg, rgba(255,45,45,0.5) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,45,45,0.3) 1px, transparent 1px);
+    background-size: 60px 60px;
+  }
+
+  /* Pause animations for off-screen decorative elements */
+  .anim-paused {
+    animation-play-state: paused !important;
+  }
+  .anim-paused::before {
+    animation-play-state: paused !important;
+  }
+  .anim-paused::after {
+    animation-play-state: paused !important;
+  }
+</style>
+</head>
+<body>
+
+<!-- ================================================ -->
+<!-- INTRO FLASH — пиротехнический выстрел            -->
+<!-- Красная вспышка → имя → чёрный                   -->
+<!-- ================================================ -->
+<!-- Bass system overlays -->
+<div id="bass-overlay"></div>
+<div id="bass-vignette"></div>
+
+<div id="intro-flash">
+  <span>VZ</span>
+</div>
+
+<!-- ================================================ -->
+<!-- HERO — Афиша стадиона                            -->
+<!-- Имя на весь экран, не по центру, агрессивно       -->
+<!-- ================================================ -->
+<section id="hero" class="relative min-h-screen overflow-hidden scanlines">
+  <!-- YouTube Video Background (API player) -->
+  <div id="yt-container" class="absolute inset-0 z-[1] overflow-hidden">
+    <div id="yt-player-wrap" style="position:absolute; top:50%; left:50%; min-width:100%; min-height:100%; width:177.78vh; height:56.25vw; transform:translate(-50%,-50%); pointer-events:none; z-index:0;">
+      <div id="yt-player" style="width:100%; height:100%;"></div>
+    </div>
+    <!-- Dark overlay + red tint for readability -->
+    <div class="absolute inset-0 bg-gradient-to-b from-black/70 via-black/50 to-[#0A0A0A]" style="z-index:1;"></div>
+    <div class="absolute inset-0 bg-accent/10 mix-blend-color" style="z-index:2;"></div>
+  </div>
+
+  <!-- Fallback: Vanta.js NET (shows if no video) -->
+  <div id="vanta-hero" class="absolute inset-0 z-0"></div>
+
+  <!-- Sound toggle button -->
+  <button id="sound-toggle" onclick="toggleSound()" style="position:absolute; bottom:24px; right:24px; z-index:50; width:56px; height:56px; border-radius:50%; border:2px solid rgba(255,45,45,0.6); background:rgba(10,10,10,0.7); backdrop-filter:blur(8px); cursor:pointer; display:flex; align-items:center; justify-content:center; transition:all 0.3s ease;" onmouseenter="this.style.borderColor='#FF2D2D';this.style.background='rgba(255,45,45,0.15)'" onmouseleave="this.style.borderColor='rgba(255,45,45,0.6)';this.style.background='rgba(10,10,10,0.7)'">
+    <svg id="sound-off-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#FF2D2D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+      <line x1="23" y1="9" x2="17" y2="15"></line>
+      <line x1="17" y1="9" x2="23" y2="15"></line>
+    </svg>
+    <svg id="sound-on-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#FF2D2D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none;">
+      <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+      <path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path>
+      <path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+    </svg>
+  </button>
+
+  <!-- Pyro particles -->
+  <div class="pyro-container" id="pyro"></div>
+
+  <div class="relative z-10 min-h-screen flex flex-col justify-end px-6 md:px-12 pb-12 md:pb-16">
+
+    <!-- Tagline — small, top left like a venue stamp -->
+    <div class="absolute top-8 left-6 md:left-12" id="hero-venue">
+      <p class="font-body text-[0.6rem] tracking-[0.5em] uppercase text-warm/30">Minsk · 2015 — Present</p>
+      <div class="wristband mt-2 w-24"></div>
+    </div>
+
+    <!-- Right side — role -->
+    <div class="absolute top-8 right-6 md:right-12 text-right" id="hero-role">
+      <p class="font-body text-[0.6rem] tracking-[0.5em] uppercase text-accent/60">Serial investor</p>
+      <!-- Waveform -->
+      <div class="mt-3 flex items-end justify-end gap-[2px]">
+        <span class="wave-bar" style="animation-delay: 0s;"></span>
+        <span class="wave-bar" style="animation-delay: 0.15s;"></span>
+        <span class="wave-bar" style="animation-delay: 0.3s;"></span>
+        <span class="wave-bar" style="animation-delay: 0.45s;"></span>
+        <span class="wave-bar" style="animation-delay: 0.6s;"></span>
+        <span class="wave-bar" style="animation-delay: 0.75s;"></span>
+        <span class="wave-bar" style="animation-delay: 0.2s;"></span>
+        <span class="wave-bar" style="animation-delay: 0.5s;"></span>
+      </div>
+    </div>
+
+    <!-- GIANT NAME — smashed to the left, not centered -->
+    <div id="hero-name-block">
+      <h1 class="font-display leading-[0.85] tracking-[-0.02em] glitch relative" data-text="VITALIY ZHITNIY" style="font-size: clamp(5rem, 16vw, 18rem); transform-origin: center bottom;" id="hero-name">
+        <span class="pulse-letter">V</span><span class="pulse-letter">I</span><span class="pulse-letter">T</span><span class="pulse-letter">A</span><span class="pulse-letter">L</span><span class="pulse-letter">I</span><span class="pulse-letter">Y</span><br>
+        <span class="pulse-letter">Z</span><span class="pulse-letter">H</span><span class="pulse-letter">I</span><span class="pulse-letter">T</span><span class="pulse-letter">N</span><span class="pulse-letter">I</span><span class="pulse-letter">Y</span>
+      </h1>
+
+      <!-- Sub line — offset right, breaking the alignment -->
+      <div class="md:ml-[15vw] mt-4 md:mt-6" id="hero-sub">
+        <p class="font-heading text-lg md:text-2xl text-warm/60 tracking-wider">
+          EX CONCERT DIRECTOR OF <span class="text-accent">MAX KORZH</span>
+        </p>
+        <p class="font-body text-sm text-warm/30 mt-2 max-w-md">
+          15+ investments across tech, Amazon, and Wildberries. Learned to scale 50K-person stadiums. Now scaling markets.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================================================ -->
+<!-- MARQUEE — бегущая лента как на концертном экране  -->
+<!-- ================================================ -->
+<!-- DOUBLE MARQUEE — collision of two speeds -->
+<div class="border-y border-white/[0.04] py-3 bg-[#050505] relative overflow-hidden">
+  <div class="marquee-track font-display text-5xl md:text-7xl text-white/[0.06] uppercase whitespace-nowrap">
+    <span class="mx-6">ENERGY</span><span class="mx-6 text-accent/30">×</span>
+    <span class="mx-6">INVESTMENTS</span><span class="mx-6 text-accent/30">×</span>
+    <span class="mx-6">CONCERTS</span><span class="mx-6 text-accent/30">×</span>
+    <span class="mx-6">AMAZON</span><span class="mx-6 text-accent/30">×</span>
+    <span class="mx-6">WILDBERRIES</span><span class="mx-6 text-accent/30">×</span>
+    <span class="mx-6">TECH</span><span class="mx-6 text-accent/30">×</span>
+    <span class="mx-6">MINSK</span><span class="mx-6 text-accent/30">×</span>
+    <span class="mx-6">ENERGY</span><span class="mx-6 text-accent/30">×</span>
+    <span class="mx-6">INVESTMENTS</span><span class="mx-6 text-accent/30">×</span>
+    <span class="mx-6">CONCERTS</span><span class="mx-6 text-accent/30">×</span>
+    <span class="mx-6">AMAZON</span><span class="mx-6 text-accent/30">×</span>
+    <span class="mx-6">WILDBERRIES</span><span class="mx-6 text-accent/30">×</span>
+    <span class="mx-6">TECH</span><span class="mx-6 text-accent/30">×</span>
+    <span class="mx-6">MINSK</span><span class="mx-6 text-accent/30">×</span>
+  </div>
+</div>
+<div class="border-b border-white/[0.04] py-2 bg-[#030303] overflow-hidden">
+  <div class="marquee-track-reverse font-mono text-xs md:text-sm text-accent/20 uppercase whitespace-nowrap tracking-[0.3em]">
+    <span class="mx-8">50K+ AUDIENCE</span>
+    <span class="mx-8">SERIAL INVESTOR</span>
+    <span class="mx-8">STADIUM TOURS</span>
+    <span class="mx-8">AMAZON FBA</span>
+    <span class="mx-8">WILDBERRIES</span>
+    <span class="mx-8">AI & SAAS</span>
+    <span class="mx-8">MINSK → WORLD</span>
+    <span class="mx-8">50K+ AUDIENCE</span>
+    <span class="mx-8">SERIAL INVESTOR</span>
+    <span class="mx-8">STADIUM TOURS</span>
+    <span class="mx-8">AMAZON FBA</span>
+    <span class="mx-8">WILDBERRIES</span>
+    <span class="mx-8">AI & SAAS</span>
+    <span class="mx-8">MINSK → WORLD</span>
+  </div>
+</div>
+
+<!-- ================================================ -->
+<!-- PHOTO + STATEMENT — фото кровоточит за край       -->
+<!-- Текст налезает на фото (layer collision)          -->
+<!-- ================================================ -->
+<section class="relative py-16 md:py-0 md:min-h-screen flex items-center overflow-hidden" id="photo-section">
+
+  <!-- Background atmosphere: album cover photo -->
+  <div class="absolute inset-0 z-0 desktop-only" id="album-bg" style="opacity:0;">
+    <img src="malyj-povzroslel-e1618174544844.jpg" alt="" class="w-full h-full object-cover" style="filter: grayscale(0.5) contrast(1.3) brightness(0.5);" loading="lazy">
+    <div class="absolute inset-0 bg-gradient-to-r from-[#0A0A0A]/90 via-[#0A0A0A]/50 to-transparent"></div>
+    <div class="absolute inset-0 bg-gradient-to-t from-[#0A0A0A]/80 via-transparent to-[#0A0A0A]/60"></div>
+    <div class="absolute inset-0 bg-accent/8 mix-blend-color"></div>
+  </div>
+
+  <!-- Photo — bleeds right, diagonal wipe reveal -->
+  <div class="absolute right-0 top-0 w-[70vw] md:w-[45vw] h-full z-0 desktop-only" id="photo-reveal-wrap" style="clip-path: polygon(100% 0, 100% 0, 100% 100%, 100% 100%);">
+    <div class="photo-brutal w-full h-full relative" id="photo-inner" style="transform: scale(1.15);">
+      <img src="photo_2026-04-01_16-17-40.jpg" alt="Vitaliy Zhitniy"
+           class="w-full h-full object-cover object-top"
+           onerror="this.parentElement.parentElement.style.background='linear-gradient(135deg,rgba(255,45,45,0.05),transparent)'">
+      <!-- Red wash -->
+      <div class="absolute inset-0 bg-gradient-to-l from-transparent via-transparent to-[#0A0A0A]"></div>
+      <div class="absolute inset-0 bg-gradient-to-t from-[#0A0A0A] via-transparent to-transparent"></div>
+      <div class="absolute inset-0 bg-accent/10 mix-blend-multiply"></div>
+    </div>
+  </div>
+
+  <!-- Red horizontal flash line -->
+  <div id="photo-flash-line" style="position:absolute; left:0; top:50%; width:0; height:3px; background:#FF2D2D; z-index:20; box-shadow:0 0 30px #FF2D2D, 0 0 60px rgba(255,45,45,0.5);"></div>
+
+  <!-- Text — overlaps photo from left -->
+  <div class="relative z-10 px-6 md:px-12 max-w-3xl">
+    <!-- Giant number behind -->
+    <span class="font-display text-[12rem] md:text-[20rem] text-white/[0.02] absolute -top-16 -left-8 leading-none pointer-events-none select-none desktop-only">01</span>
+
+    <div id="statement-block">
+      <div class="wristband w-12 mb-8"></div>
+      <h2 class="font-display text-5xl md:text-7xl lg:text-8xl leading-[0.9] mb-8">
+        <span class="slam-word" id="slam-1" style="display:inline-block; opacity:0;">STADIUM</span><br>
+        <span class="slam-word text-accent" id="slam-2" style="display:inline-block; opacity:0;">TAUGHT</span><br>
+        <span class="slam-word" id="slam-3" style="display:inline-block; opacity:0;">SCALE</span>
+      </h2>
+      <p class="text-warm/50 text-lg md:text-xl leading-relaxed max-w-lg" id="statement-desc" style="opacity:0;">
+        Concerts taught me chaos management. 50K screaming fans, split-second decisions, logistics that must work flawlessly. <span class="text-warm/80">That's scaling.</span> The skill transfers everywhere.
+      </p>
+    </div>
+
+    <!-- Mobile photo -->
+    <div class="md:hidden mt-12 -mx-6">
+      <img src="photo_2026-04-01_16-17-40.jpg" alt="Vitaliy Zhitniy"
+           class="w-full h-72 object-cover object-top"
+           style="filter: grayscale(0.5) contrast(1.3); clip-path: polygon(0 5%, 100% 0, 100% 90%, 0 100%);"
+           onerror="this.style.display='none'"
+           loading="lazy">
+    </div>
+  </div>
+
+  <!-- Floating decorative elements -->
+  <div class="deco-cross desktop-only" style="right:8%; top:15%;"></div>
+  <div class="deco-cross desktop-only" style="left:5%; bottom:20%; transform:rotate(45deg);"></div>
+  <div class="deco-dot" style="right:15%; bottom:30%;"></div>
+  <div class="deco-dot" style="left:35%; top:10%;"></div>
+  <div class="deco-bracket desktop-only" style="right:-2%; top:20%;">]</div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- ================================================ -->
+<!-- SILENCE — Carson: огромная пустота, одна фраза    -->
+<!-- ================================================ -->
+<section class="relative flex items-center justify-center overflow-hidden" style="min-height: 85vh;" id="silence">
+  <!-- Atmospheric car photo background -->
+  <div class="absolute inset-0 z-0" id="silence-bg" style="opacity:0;">
+    <img src="5b0221c40cd7.jpg" alt="" class="w-full h-full object-cover object-center" style="filter: grayscale(0.7) contrast(1.5) brightness(0.25);" loading="lazy">
+    <div class="absolute inset-0 bg-[#0A0A0A]/70"></div>
+    <div class="absolute inset-0 bg-accent/8 mix-blend-color"></div>
+    <div class="absolute inset-0 bg-gradient-to-t from-[#0A0A0A] via-transparent to-[#0A0A0A]"></div>
+  </div>
+  <div class="concert-smoke"></div>
+  <div class="spotlight-sweep"></div>
+  <div class="stage-glow"></div>
+  <div class="text-center px-6 relative z-10">
+    <p class="label-mono mb-6" id="silence-label" style="opacity:0;">[ philosophy ]</p>
+    <p class="font-display text-6xl md:text-8xl lg:text-[10rem] text-warm leading-[0.85] tracking-[-0.02em]" id="silence-text">
+      I BET<br>ON <span class="text-accent">PEOPLE</span>
+    </p>
+    <div class="wristband w-20 mx-auto mt-10 opacity-50"></div>
+    <p class="label-mono mt-8" id="silence-sub" style="opacity:0;">— Vitaliy Zhitniy</p>
+  </div>
+  <!-- Floating decorative elements -->
+  <div class="deco-cross desktop-only" style="left:8%; top:20%;"></div>
+  <div class="deco-dot" style="right:12%; top:40%;"></div>
+  <div class="deco-bracket desktop-only" style="left:-1%; bottom:15%;">[</div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- DOUBLE MARQUEE 2 — between silence and numbers -->
+<div class="py-2 bg-[#030303] overflow-hidden border-b border-white/[0.03]">
+  <div class="marquee-track font-mono text-[0.6rem] text-accent/15 uppercase whitespace-nowrap tracking-[0.5em]" style="animation-duration:35s;">
+    <span class="mx-10">I BET ON PEOPLE</span>
+    <span class="mx-10">SCALE CHAOS INTO SYSTEM</span>
+    <span class="mx-10">ENERGY DECIDES</span>
+    <span class="mx-10">BACKSTAGE TO BUSINESS</span>
+    <span class="mx-10">I BET ON PEOPLE</span>
+    <span class="mx-10">SCALE CHAOS INTO SYSTEM</span>
+    <span class="mx-10">ENERGY DECIDES</span>
+    <span class="mx-10">BACKSTAGE TO BUSINESS</span>
+    <span class="mx-10">I BET ON PEOPLE</span>
+    <span class="mx-10">SCALE CHAOS INTO SYSTEM</span>
+    <span class="mx-10">ENERGY DECIDES</span>
+    <span class="mx-10">BACKSTAGE TO BUSINESS</span>
+  </div>
+</div>
+
+<!-- ================================================ -->
+<!-- NUMBERS — one dense block, not 3 empty screens    -->
+<!-- ================================================ -->
+<section id="numbers-section" class="relative py-24 md:py-32 overflow-hidden" style="background: linear-gradient(180deg, #0A0A0A 0%, #0F0808 30%, #0F0808 70%, #0A0A0A 100%);">
+  <div class="laser-grid"></div>
+  <div class="spotlight-sweep"></div>
+  <div class="concert-smoke"></div>
+
+  <!-- Ghost text behind -->
+  <span class="font-display text-[12rem] md:text-[22rem] leading-none absolute -top-[2rem] right-[5%] pointer-events-none select-none desktop-only" style="color:transparent; -webkit-text-stroke:1px rgba(255,45,45,0.04);">IMPACT</span>
+
+  <div class="max-w-6xl mx-auto px-6 md:px-12 relative z-10">
+
+    <!-- Section label -->
+    <p class="label-mono mb-12">[ by the numbers ]</p>
+
+    <!-- Numbers grid -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-0 md:gap-0">
+
+      <!-- 50K+ -->
+      <div class="number-slide relative py-12 md:py-16 md:pr-12 border-b md:border-b-0 md:border-r border-white/[0.06]" id="num-1">
+        <div class="number-flash" style="border-radius:12px;"></div>
+        <div class="relative z-10">
+          <div class="flex items-baseline gap-1">
+            <span class="font-display text-[6rem] md:text-[8rem] lg:text-[10rem] leading-none text-accent stat-counter" data-target="50">0</span>
+            <span class="font-display text-[3rem] md:text-[4rem] text-accent/40 leading-none">K+</span>
+          </div>
+          <div class="mt-4">
+            <p class="font-heading text-lg md:text-xl text-warm/60 tracking-wider uppercase">Stadium audience</p>
+            <p class="font-mono text-[0.55rem] text-warm/20 tracking-[0.3em] mt-2 uppercase">max korzh · cis tours</p>
+          </div>
+          <!-- Visual bar -->
+          <div class="mt-6 h-[3px] bg-white/[0.06] rounded-full overflow-hidden">
+            <div class="h-full bg-accent/60 rounded-full num-bar" style="width:0%;" data-width="95%"></div>
+          </div>
+        </div>
+        <!-- Mini ghost number -->
+        <span class="font-display text-[14rem] leading-none absolute -right-4 -top-8 pointer-events-none select-none opacity-[0.03]">50</span>
+      </div>
+
+      <!-- 15+ -->
+      <div class="number-slide relative py-12 md:py-16 md:px-12 border-b md:border-b-0 md:border-r border-white/[0.06]" id="num-2">
+        <div class="number-flash" style="border-radius:12px;"></div>
+        <div class="relative z-10">
+          <div class="flex items-baseline gap-1">
+            <span class="font-display text-[6rem] md:text-[8rem] lg:text-[10rem] leading-none text-warm stat-counter" data-target="15">0</span>
+            <span class="font-display text-[3rem] md:text-[4rem] text-warm/20 leading-none">+</span>
+          </div>
+          <div class="mt-4">
+            <p class="font-heading text-lg md:text-xl text-warm/60 tracking-wider uppercase">Tech bets</p>
+            <p class="font-mono text-[0.55rem] text-warm/20 tracking-[0.3em] mt-2 uppercase">saas · ai · automation</p>
+          </div>
+          <!-- Visual bar -->
+          <div class="mt-6 h-[3px] bg-white/[0.06] rounded-full overflow-hidden">
+            <div class="h-full bg-warm/30 rounded-full num-bar" style="width:0%;" data-width="70%"></div>
+          </div>
+        </div>
+        <span class="font-display text-[14rem] leading-none absolute -right-4 -top-8 pointer-events-none select-none opacity-[0.03]">15</span>
+      </div>
+
+      <!-- 3 -->
+      <div class="number-slide relative py-12 md:py-16 md:pl-12" id="num-3">
+        <div class="number-flash" style="border-radius:12px;"></div>
+        <div class="relative z-10">
+          <div class="flex items-baseline gap-1">
+            <span class="font-display text-[6rem] md:text-[8rem] lg:text-[10rem] leading-none text-warm stat-counter" data-target="3">0</span>
+          </div>
+          <div class="mt-4">
+            <p class="font-heading text-lg md:text-xl text-warm/60 tracking-wider uppercase">Active ecosystems</p>
+            <p class="font-mono text-[0.55rem] text-accent/30 tracking-[0.3em] mt-2 uppercase">amazon · wildberries · tech</p>
+          </div>
+          <!-- Visual: 3 dots for 3 markets -->
+          <div class="mt-6 flex items-center gap-3">
+            <div class="flex items-center gap-2">
+              <div class="w-3 h-3 rounded-full bg-[#FF9900]/60 num-dot" style="transform:scale(0);"></div>
+              <span class="font-mono text-[0.5rem] text-warm/20 uppercase">AMZ</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <div class="w-3 h-3 rounded-full bg-[#CB11AB]/60 num-dot" style="transform:scale(0);"></div>
+              <span class="font-mono text-[0.5rem] text-warm/20 uppercase">WB</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <div class="w-3 h-3 rounded-full bg-[#00FFF0]/40 num-dot" style="transform:scale(0);"></div>
+              <span class="font-mono text-[0.5rem] text-warm/20 uppercase">TECH</span>
+            </div>
+          </div>
+        </div>
+        <span class="font-display text-[14rem] leading-none absolute -right-4 -top-8 pointer-events-none select-none opacity-[0.03]">3</span>
+      </div>
+
+    </div>
+
+    <!-- Bottom accent line -->
+    <div class="mt-12 flex items-center gap-4">
+      <div class="h-[1px] flex-1 bg-gradient-to-r from-accent/30 to-transparent"></div>
+      <p class="font-mono text-[0.55rem] text-warm/15 tracking-[0.4em] uppercase">from stadiums to startups</p>
+      <div class="h-[1px] flex-1 bg-gradient-to-l from-accent/30 to-transparent"></div>
+    </div>
+
+  </div>
+
+  <div class="deco-cross desktop-only" style="right:3%; top:15%;"></div>
+  <div class="deco-cross desktop-only" style="left:2%; bottom:20%; transform:rotate(45deg);"></div>
+  <div class="deco-dot" style="right:10%; bottom:30%;"></div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- ================================================ -->
+<!-- PORTFOLIO — setlist rows                          -->
+<!-- ================================================ -->
+<section class="relative py-24 overflow-hidden" id="portfolio-section" style="background: linear-gradient(180deg, #0A0A0A 0%, #0D0808 50%, #0A0A0A 100%);">
+  <div class="concert-smoke"></div>
+  <div class="crowd-dots"></div>
+  <!-- Big ghost text -->
+  <span class="font-display text-[15rem] md:text-[25rem] leading-none absolute -top-[5rem] left-1/2 -translate-x-1/2 pointer-events-none select-none desktop-only" style="color:transparent; -webkit-text-stroke:1px rgba(255,45,45,0.03);">SETLIST</span>
+  <div class="px-6 md:px-12 mb-16 relative z-10">
+    <p class="label-mono mb-4">[ setlist ]</p>
+    <div class="wristband w-12 mb-6"></div>
+    <h2 class="font-display text-5xl md:text-7xl" id="portfolio-title">PORTFOLIO</h2>
+  </div>
+
+  <!-- Amazon -->
+  <div class="portfolio-row group border-t border-white/[0.04] hover:bg-white/[0.02] transition-colors duration-500">
+    <div class="max-w-6xl mx-auto px-6 md:px-12 py-8 md:py-12 flex flex-col md:flex-row md:items-center justify-between gap-6">
+      <div class="flex items-center gap-6 md:gap-10">
+        <span class="font-display text-5xl md:text-7xl text-accent/20 group-hover:text-accent/60 transition-colors duration-500">01</span>
+        <div>
+          <h3 class="font-display text-3xl md:text-5xl group-hover:tracking-wider transition-all duration-500">AMAZON FBA</h3>
+          <p class="text-warm/30 text-sm mt-1">Private label brands across US and EU marketplaces</p>
+        </div>
+      </div>
+      <div class="flex items-center gap-4">
+        <svg width="100" height="35" viewBox="0 0 100 35" fill="none" class="opacity-30 group-hover:opacity-70 transition-opacity">
+          <text x="0" y="24" font-family="Bebas Neue, sans-serif" font-size="24" fill="#FF9900">amazon</text>
+          <path d="M5 30 Q50 37 95 30" stroke="#FF9900" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+        </svg>
+        <span class="text-warm/20 text-xs tracking-widest uppercase">Active</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Wildberries -->
+  <div class="portfolio-row group border-t border-white/[0.04] hover:bg-white/[0.02] transition-colors duration-500">
+    <div class="max-w-6xl mx-auto px-6 md:px-12 py-8 md:py-12 flex flex-col md:flex-row md:items-center justify-between gap-6">
+      <div class="flex items-center gap-6 md:gap-10">
+        <span class="font-display text-5xl md:text-7xl text-accent/20 group-hover:text-accent/60 transition-colors duration-500">02</span>
+        <div>
+          <h3 class="font-display text-3xl md:text-5xl group-hover:tracking-wider transition-all duration-500">WILDBERRIES</h3>
+          <p class="text-warm/30 text-sm mt-1">Brands and logistics on CIS's fastest-growing marketplace</p>
+        </div>
+      </div>
+      <div class="flex items-center gap-4">
+        <svg width="36" height="36" viewBox="0 0 36 36" fill="none" class="opacity-30 group-hover:opacity-70 transition-opacity">
+          <circle cx="18" cy="18" r="16" stroke="#CB11AB" stroke-width="1.5" fill="none"/>
+          <text x="8" y="23" font-family="Space Grotesk" font-size="14" fill="#CB11AB" font-weight="700">W</text>
+        </svg>
+        <span class="text-warm/20 text-xs tracking-widest uppercase">Active</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tech -->
+  <div class="portfolio-row group border-t border-white/[0.04] hover:bg-white/[0.02] transition-colors duration-500">
+    <div class="max-w-6xl mx-auto px-6 md:px-12 py-8 md:py-12 flex flex-col md:flex-row md:items-center justify-between gap-6">
+      <div class="flex items-center gap-6 md:gap-10">
+        <span class="font-display text-5xl md:text-7xl text-accent/20 group-hover:text-accent/60 transition-colors duration-500">03</span>
+        <div>
+          <h3 class="font-display text-3xl md:text-5xl group-hover:tracking-wider transition-all duration-500">TECH & AI</h3>
+          <p class="text-warm/30 text-sm mt-1">SaaS tools, AI automation, and early-stage startups with fire</p>
+        </div>
+      </div>
+      <div class="flex items-center gap-4">
+        <span class="font-body text-[#00FFF0]/40 text-2xl group-hover:text-[#00FFF0]/80 transition-colors">&lt;/&gt;</span>
+        <span class="text-warm/20 text-xs tracking-widest uppercase">Active</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Max Korzh Legacy -->
+  <div class="portfolio-row group border-t border-b border-white/[0.04] hover:bg-accent/[0.03] transition-colors duration-500">
+    <div class="max-w-6xl mx-auto px-6 md:px-12 py-8 md:py-12 flex flex-col md:flex-row md:items-center justify-between gap-6">
+      <div class="flex items-center gap-6 md:gap-10">
+        <span class="font-display text-5xl md:text-7xl text-accent/40 group-hover:text-accent transition-colors duration-500">★</span>
+        <div>
+          <h3 class="font-display text-3xl md:text-5xl group-hover:tracking-wider transition-all duration-500">MAX KORZH</h3>
+          <p class="text-warm/30 text-sm mt-1">Concert director of Belarus' biggest artist. Managed stadium tours, 50K+ per show across CIS</p>
+        </div>
+      </div>
+      <span class="text-warm/20 text-xs tracking-widest uppercase">Legacy</span>
+    </div>
+  </div>
+
+  <!-- Portfolio decorative elements -->
+  <div class="deco-cross desktop-only" style="right:5%; bottom:10%;"></div>
+  <div class="deco-dot" style="left:3%; top:50%;"></div>
+  <div class="deco-bracket desktop-only" style="right:0; bottom:20%;">}</div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- ================================================ -->
+<!-- PHILOSOPHY — scrolling text scrub                 -->
+<!-- ================================================ -->
+<section class="relative py-32 md:py-48 px-6 overflow-hidden" id="philosophy-section">
+  <div class="spotlight-sweep"></div>
+  <div class="stage-glow" style="bottom:-20%; opacity:0.5;"></div>
+  <!-- Ghost quote marks -->
+  <span class="font-display text-[20rem] md:text-[35rem] leading-none absolute -left-[5%] -top-[10%] pointer-events-none select-none desktop-only" style="color:transparent; -webkit-text-stroke:1px rgba(255,45,45,0.03);">"</span>
+  <span class="font-display text-[20rem] md:text-[35rem] leading-none absolute -right-[5%] -bottom-[15%] pointer-events-none select-none desktop-only" style="color:transparent; -webkit-text-stroke:1px rgba(255,45,45,0.03);">"</span>
+  <div class="max-w-5xl mx-auto relative z-10">
+    <p class="label-mono mb-6">[ manifesto ]</p>
+    <div class="wristband w-12 mb-12"></div>
+    <h2 class="font-heading text-3xl md:text-5xl lg:text-6xl leading-[1.3] scrub-text" id="scrub-philosophy">
+      <span class="scrub-word">Energy</span>
+      <span class="scrub-word">matters.</span>
+      <span class="scrub-word">Products</span>
+      <span class="scrub-word">without</span>
+      <span class="scrub-word">fire</span>
+      <span class="scrub-word">die.</span>
+      <span class="scrub-word">Network</span>
+      <span class="scrub-word">is</span>
+      <span class="scrub-word">everything.</span>
+      <span class="scrub-word">People</span>
+      <span class="scrub-word">who</span>
+      <span class="scrub-word">burn</span>
+      <span class="scrub-word">ignite</span>
+      <span class="scrub-word">markets.</span>
+      <span class="scrub-word">Minsk</span>
+      <span class="scrub-word">taught</span>
+      <span class="scrub-word">me</span>
+      <span class="scrub-word">not</span>
+      <span class="scrub-word">to</span>
+      <span class="scrub-word">wait.</span>
+      <span class="scrub-word">Build.</span>
+    </h2>
+  </div>
+  <div class="deco-cross desktop-only" style="right:10%; top:20%;"></div>
+  <div class="deco-dot" style="left:15%; bottom:15%;"></div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- Final marquee before CTA -->
+<div class="py-2 bg-[#050505] overflow-hidden border-b border-white/[0.03]">
+  <div class="marquee-track-reverse font-display text-4xl md:text-6xl text-white/[0.03] uppercase whitespace-nowrap" style="animation-duration:15s;">
+    <span class="mx-8">REACH OUT</span><span class="mx-8 text-accent/10">→</span>
+    <span class="mx-8">REACH OUT</span><span class="mx-8 text-accent/10">→</span>
+    <span class="mx-8">REACH OUT</span><span class="mx-8 text-accent/10">→</span>
+    <span class="mx-8">REACH OUT</span><span class="mx-8 text-accent/10">→</span>
+    <span class="mx-8">REACH OUT</span><span class="mx-8 text-accent/10">→</span>
+    <span class="mx-8">REACH OUT</span><span class="mx-8 text-accent/10">→</span>
+  </div>
+</div>
+
+<!-- ================================================ -->
+<!-- CTA — последний трек                              -->
+<!-- ================================================ -->
+<section class="relative min-h-[80vh] flex items-center justify-center overflow-hidden" id="cta-section">
+
+  <div class="concert-smoke"></div>
+  <div class="laser-grid" style="opacity:0.05;"></div>
+  <div class="stage-glow"></div>
+
+  <!-- Background flash on scroll -->
+  <div class="absolute inset-0 bg-accent/0 transition-colors duration-700 z-0" id="cta-bg"></div>
+
+  <div class="relative z-10 text-center px-6">
+    <p class="label-mono mb-8" id="cta-label" style="opacity:0;">[ got a project? ]</p>
+
+    <h2 class="font-display text-6xl md:text-8xl lg:text-[11rem] leading-[0.85] mb-12" id="cta-text">
+      <span class="cta-char">R</span><span class="cta-char">E</span><span class="cta-char">A</span><span class="cta-char">C</span><span class="cta-char">H</span><br>
+      <span class="cta-char text-accent">O</span><span class="cta-char text-accent">U</span><span class="cta-char text-accent">T</span>
+    </h2>
+
+    <a href="mailto:vitalik@zhitny.com"
+       class="inline-block border-2 border-accent text-accent hover:bg-accent hover:text-dark font-heading text-xl md:text-2xl tracking-[0.15em] px-12 md:px-16 py-5 md:py-6 uppercase transition-all duration-300 magnetic"
+       style="clip-path: polygon(0 0, 100% 0, 96% 100%, 4% 100%);">
+      vitalik@zhitny.com
+    </a>
+
+    <p class="text-warm/15 text-sm mt-16 max-w-xs mx-auto">
+      If your product burns. If your team is hungry. Let's talk.
+    </p>
+  </div>
+</section>
+
+<!-- ================================================ -->
+<!-- FOOTER — minimal                                  -->
+<!-- ================================================ -->
+<footer class="border-t border-white/[0.03] py-8">
+  <div class="max-w-6xl mx-auto px-6 md:px-12 flex flex-col md:flex-row justify-between items-center gap-4">
+    <p class="text-warm/15 text-xs tracking-widest uppercase">© 2026 Vitaliy Zhitniy</p>
+    <div class="flex items-center gap-6">
+      <div class="flex items-end gap-[2px]">
+        <span class="wave-bar" style="animation-delay:0s; height:6px;"></span>
+        <span class="wave-bar" style="animation-delay:0.2s; height:6px;"></span>
+        <span class="wave-bar" style="animation-delay:0.4s; height:6px;"></span>
+        <span class="wave-bar" style="animation-delay:0.1s; height:6px;"></span>
+      </div>
+      <p class="text-warm/10 text-xs">Belarus · Global</p>
+    </div>
+  </div>
+</footer>
+
+
+<!-- ============================================ -->
+<!-- SCRIPTS                                      -->
+<!-- ============================================ -->
+<script>
+gsap.registerPlugin(ScrollTrigger);
+
+// ==================
+// Lenis
+// ==================
+let lenis;
+if (typeof Lenis !== 'undefined') {
+  lenis = new Lenis({ duration: 1.2, easing: t => Math.min(1, 1.001 - Math.pow(2, -10 * t)), smoothWheel: true });
+  lenis.on('scroll', ScrollTrigger.update);
+  gsap.ticker.add(t => lenis.raf(t * 1000));
+  gsap.ticker.lagSmoothing(0);
+} else {
+  lenis = { stop(){}, start(){} };
+}
+
+// ==================
+// INTRO FLASH — pyro blast
+// Red screen → flash white → reveal site
+// ==================
+const flash = document.getElementById('intro-flash');
+if (flash) {
+  lenis.stop();
+  const introTL = gsap.timeline({
+    onComplete: () => {
+      flash.style.display = 'none';
+      lenis.start();
+    }
+  });
+  introTL
+    .to(flash, { backgroundColor: '#FFFFFF', duration: 0.08, delay: 0.6 })
+    .to(flash, { backgroundColor: '#FF2D2D', duration: 0.06 })
+    .to(flash, { backgroundColor: '#FFFFFF', duration: 0.05 })
+    .to(flash, { opacity: 0, duration: 0.4, ease: 'power2.in' })
+  ;
+}
+
+// ==================
+// YouTube Background Video (IFrame API)
+// ==================
+const VIDEO_ID = 'is3uofpETUo';
+
+// Load YT API
+const ytScript = document.createElement('script');
+ytScript.src = 'https://www.youtube.com/iframe_api';
+document.head.appendChild(ytScript);
+
+let ytPlayer;
+window.onYouTubeIframeAPIReady = function() {
+  ytPlayer = new YT.Player('yt-player', {
+    width: '100%',
+    height: '100%',
+    videoId: VIDEO_ID,
+    playerVars: {
+      autoplay: 1,
+      mute: 1,
+      controls: 0,
+      showinfo: 0,
+      rel: 0,
+      loop: 1,
+      playlist: VIDEO_ID,
+      playsinline: 1,
+      modestbranding: 1,
+      iv_load_policy: 3,
+      disablekb: 1,
+      fs: 0,
+      start: 131,
+      origin: window.location.origin
+    },
+    events: {
+      onReady: function(e) {
+        e.target.mute();
+        e.target.playVideo();
+        // Cancel Vanta fallback
+        if (typeof vantaInitTimeout !== 'undefined') clearTimeout(vantaInitTimeout);
+        // Hide Vanta completely, show video
+        const v = document.getElementById('vanta-hero');
+        if (v) { v.style.display = 'none'; }
+        // Ensure yt-container stays visible
+        const c = document.getElementById('yt-container');
+        if (c) { c.style.opacity = '1'; c.style.zIndex = '1'; }
+      },
+      onStateChange: function(e) {
+        // Keep playing — restart on pause or end
+        if (e.data === YT.PlayerState.ENDED) {
+          e.target.seekTo(131);
+          e.target.playVideo();
+        }
+        if (e.data === YT.PlayerState.PAUSED) {
+          e.target.playVideo();
+        }
+      },
+      onError: function() {
+        // If video fails — show Vanta fallback
+        const c = document.getElementById('yt-container');
+        if (c) c.style.display = 'none';
+        const v = document.getElementById('vanta-hero');
+        if (v) v.style.opacity = '1';
+      }
+    }
+  });
+};
+
+// ==================
+// BASS SYSTEM — hits the whole screen, not just letters
+// ==================
+(function() {
+  var heroName = document.getElementById('hero-name');
+  var hero = document.getElementById('hero');
+  var overlay = document.getElementById('bass-overlay');
+  var vignette = document.getElementById('bass-vignette');
+  var ytOverlay = document.querySelector('#yt-container .bg-gradient-to-b');
+  var waveBars = document.querySelectorAll('.wave-bar');
+  if (!heroName || !hero) return;
+
+  var bpm = 128;
+  var beat = 60000 / bpm; // ~468ms
+  var count = 0;
+  var running = false;
+
+  function kick() {
+    // === SCREEN: red flash from bottom (like pyro) ===
+    if (overlay) {
+      gsap.fromTo(overlay,
+        { opacity: 0.7 },
+        { opacity: 0, duration: 0.5, ease: 'power3.in' }
+      );
+    }
+
+    // === SCREEN: vignette contracts (tunnel vision from bass pressure) ===
+    if (vignette) {
+      gsap.fromTo(vignette,
+        { opacity: 0.5 },
+        { opacity: 0, duration: 0.6, ease: 'power2.out' }
+      );
+    }
+
+    // === HERO: entire section pushes down then rebounds ===
+    gsap.to(hero, {
+      y: 3, duration: 0.06, ease: 'power4.out',
+      onComplete: function() {
+        gsap.to(hero, { y: 0, duration: 0.4, ease: 'elastic.out(1, 0.4)' });
+      }
+    });
+
+    // === NAME: compress + bloom ===
+    gsap.to(heroName, {
+      scaleY: 0.97, scaleX: 1.01, duration: 0.05, ease: 'power4.out',
+      onComplete: function() {
+        gsap.to(heroName, { scaleY: 1, scaleX: 1, duration: 0.5, ease: 'elastic.out(1, 0.3)' });
+      }
+    });
+
+    // === NAME: text-shadow bloom — SLOW decay like real light ===
+    gsap.fromTo(heroName,
+      { textShadow: '0 0 60px rgba(255,45,45,0.8), 0 0 120px rgba(255,45,45,0.4), 0 4px 20px rgba(0,0,0,0.5)' },
+      { textShadow: '0 0 0px rgba(255,45,45,0), 0 0 0px rgba(255,45,45,0), 0 0px 0px rgba(0,0,0,0)', duration: 1.2, ease: 'power2.in' }
+    );
+
+    // === VIDEO OVERLAY: darken on impact, brighten after ===
+    if (ytOverlay) {
+      gsap.to(ytOverlay, { opacity: 0.9, duration: 0.05 });
+      gsap.to(ytOverlay, { opacity: 1, duration: 0.4, delay: 0.05 });
+    }
+
+    // === WAVE BARS: explode up ===
+    waveBars.forEach(function(bar) {
+      gsap.fromTo(bar,
+        { height: (18 + Math.random() * 18) + 'px', opacity: 1 },
+        { height: (4 + Math.random() * 4) + 'px', opacity: 0.3, duration: 0.4, ease: 'power2.out' }
+      );
+    });
+  }
+
+  function snare() {
+    // === Quick white flash on letters only ===
+    gsap.fromTo(heroName,
+      { color: '#FFFFFF', textShadow: '0 0 20px rgba(255,255,255,0.4)' },
+      { color: '#F0EDE8', textShadow: '0 0 0px rgba(255,255,255,0)', duration: 0.5, ease: 'power2.in' }
+    );
+
+    // === Micro-shake (like snare rattle) ===
+    gsap.to(heroName, {
+      x: 2, duration: 0.03,
+      onComplete: function() {
+        gsap.to(heroName, {
+          x: -1.5, duration: 0.03,
+          onComplete: function() {
+            gsap.to(heroName, { x: 0, duration: 0.15, ease: 'power2.out' });
+          }
+        });
+      }
+    });
+
+    // === Vignette light pulse ===
+    if (vignette) {
+      gsap.fromTo(vignette, { opacity: 0.2 }, { opacity: 0, duration: 0.35, ease: 'power2.out' });
+    }
+
+    // === Wave bars: medium hit ===
+    waveBars.forEach(function(bar) {
+      gsap.fromTo(bar,
+        { height: (10 + Math.random() * 10) + 'px', opacity: 0.8 },
+        { height: (4 + Math.random() * 4) + 'px', opacity: 0.3, duration: 0.3, ease: 'power2.out' }
+      );
+    });
+  }
+
+  function ghost() {
+    // === Barely perceptible breathing ===
+    gsap.to(heroName, {
+      scaleY: 1.002, duration: 0.08,
+      onComplete: function() {
+        gsap.to(heroName, { scaleY: 1, duration: 0.25, ease: 'power1.out' });
+      }
+    });
+
+    // Wave bars: tiny twitch
+    waveBars.forEach(function(bar) {
+      gsap.fromTo(bar,
+        { height: (5 + Math.random() * 5) + 'px', opacity: 0.5 },
+        { height: (4 + Math.random() * 3) + 'px', opacity: 0.3, duration: 0.2, ease: 'power1.out' }
+      );
+    });
+  }
+
+  function beatLoop() {
+    count++;
+    var pos = count % 4;
+
+    if (pos === 1) kick();      // KICK on 1
+    else if (pos === 3) snare(); // SNARE on 3
+    else ghost();                // ghost on 2, 4
+  }
+
+  // Only pulse while hero is in view
+  var bassObserver = new IntersectionObserver(function(entries) {
+    if (entries[0].isIntersecting && !running) {
+      running = true;
+      bassInterval = setInterval(beatLoop, beat);
+    } else if (!entries[0].isIntersecting && running) {
+      running = false;
+      clearInterval(bassInterval);
+      // Reset everything clean
+      gsap.set(heroName, { scaleY: 1, scaleX: 1, x: 0, color: '#F0EDE8', textShadow: 'none' });
+      gsap.set(hero, { y: 0 });
+      if (overlay) gsap.set(overlay, { opacity: 0 });
+      if (vignette) gsap.set(vignette, { opacity: 0 });
+    }
+  }, { threshold: 0.3 });
+
+  var bassInterval;
+
+  // Start after intro flash
+  setTimeout(function() {
+    bassObserver.observe(hero);
+  }, 2800);
+})();
+
+// Sound toggle
+let soundOn = false;
+function toggleSound() {
+  if (!ytPlayer) return;
+  soundOn = !soundOn;
+  if (soundOn) {
+    ytPlayer.unMute();
+    ytPlayer.setVolume(50);
+    document.getElementById('sound-off-icon').style.display = 'none';
+    document.getElementById('sound-on-icon').style.display = 'block';
+  } else {
+    ytPlayer.mute();
+    document.getElementById('sound-off-icon').style.display = 'block';
+    document.getElementById('sound-on-icon').style.display = 'none';
+  }
+}
+
+// ==================
+// Vanta NET — only init as fallback, wait to see if YT loads
+// ==================
+var vantaInitTimeout = setTimeout(function() {
+  // If YouTube hasn't loaded after 4 seconds, show Vanta
+  var ytContainer = document.getElementById('yt-container');
+  var ytIframe = ytContainer ? ytContainer.querySelector('iframe') : null;
+  if (!ytIframe && typeof VANTA !== 'undefined') {
+    try {
+      VANTA.NET({
+        el: '#vanta-hero',
+        mouseControls: true,
+        touchControls: false,
+        gyroControls: false,
+        color: 0xFF2D2D,
+        backgroundColor: 0x0A0A0A,
+        points: 6,
+        maxDistance: 25,
+        spacing: 20,
+        showDots: true
+      });
+    } catch(e) {}
+  }
+}, 4000);
+
+// ==================
+// Hero entrance
+// ==================
+const heroTL = gsap.timeline({ delay: 1.2 });
+heroTL
+  .from('#hero-name-block h1', {
+    y: 200,
+    opacity: 0,
+    skewY: 8,
+    duration: 1,
+    ease: 'power4.out',
+  })
+  .from('#hero-sub', {
+    y: 40,
+    opacity: 0,
+    duration: 0.7,
+    ease: 'power3.out',
+  }, '-=0.3')
+  .from('#hero-venue', { x: -30, opacity: 0, duration: 0.5 }, '-=0.5')
+  .from('#hero-role', { x: 30, opacity: 0, duration: 0.5 }, '-=0.5')
+;
+
+// ==================
+// Pyro particles on hero
+// ==================
+const pyroContainer = document.getElementById('pyro');
+if (pyroContainer) {
+  for (let i = 0; i < 40; i++) {
+    const p = document.createElement('div');
+    p.className = 'pyro-particle';
+    p.style.left = Math.random() * 100 + '%';
+    p.style.top = Math.random() * 100 + '%';
+    pyroContainer.appendChild(p);
+
+    gsap.to(p, {
+      y: -(Math.random() * 200 + 100),
+      x: (Math.random() - 0.5) * 100,
+      opacity: 1,
+      duration: 0.3,
+      delay: 1 + Math.random() * 0.3,
+      ease: 'power2.out',
+      onComplete: () => {
+        gsap.to(p, {
+          y: `+=${Math.random() * 300 + 200}`,
+          opacity: 0,
+          duration: 1 + Math.random(),
+          ease: 'power1.in',
+        });
+      }
+    });
+  }
+}
+
+// ==================
+// Album background fade-in on photo section
+// ==================
+gsap.fromTo('#album-bg',
+  { opacity: 0 },
+  { opacity: 0.7, duration: 1.5, ease: 'power2.out',
+    scrollTrigger: {
+      trigger: '#photo-section',
+      start: 'top 70%',
+      toggleActions: 'play reverse play reverse',
+    }
+  }
+);
+
+// Silence section — car photo fade-in
+gsap.fromTo('#silence-bg',
+  { opacity: 0 },
+  { opacity: 0.5, duration: 1.8, ease: 'power2.out',
+    scrollTrigger: {
+      trigger: '#silence',
+      start: 'top 60%',
+      toggleActions: 'play reverse play reverse',
+    }
+  }
+);
+
+// ==================
+// Photo + Statement — BASS DROP animation
+// ==================
+(function() {
+  const stTl = gsap.timeline({
+    scrollTrigger: {
+      trigger: '#photo-section',
+      start: 'top 65%',
+      toggleActions: 'play none none reverse',
+    }
+  });
+
+  // 1. Red laser line shoots across
+  stTl.to('#photo-flash-line', {
+    width: '100%',
+    duration: 0.4,
+    ease: 'power4.in',
+  });
+
+  // 2. Photo diagonal wipe reveal + zoom settle
+  stTl.to('#photo-reveal-wrap', {
+    clipPath: 'polygon(30% 0, 100% 0, 100% 100%, 0% 100%)',
+    duration: 0.9,
+    ease: 'power3.inOut',
+  }, '-=0.1');
+
+  stTl.to('#photo-inner', {
+    scale: 1,
+    duration: 1.4,
+    ease: 'power2.out',
+  }, '<');
+
+  // 3. Words SLAM in one by one like bass kicks
+  ['#slam-1', '#slam-2', '#slam-3'].forEach(function(sel, i) {
+    stTl.to(sel, {
+      opacity: 1,
+      duration: 0.01,
+    }, 0.4 + i * 0.18);
+
+    stTl.from(sel, {
+      y: 80,
+      scaleY: 1.6,
+      scaleX: 0.85,
+      skewX: -8 + i * 4,
+      duration: 0.5,
+      ease: 'back.out(2)',
+    }, 0.4 + i * 0.18);
+
+    // Screen shake on each slam
+    stTl.to('#photo-section', {
+      x: function() { return (Math.random() - 0.5) * 8; },
+      y: function() { return (Math.random() - 0.5) * 4; },
+      duration: 0.05,
+      repeat: 3,
+      yoyo: true,
+      ease: 'none',
+      onComplete: function() {
+        gsap.set('#photo-section', { x: 0, y: 0 });
+      }
+    }, 0.4 + i * 0.18);
+  });
+
+  // 4. Red line fades out
+  stTl.to('#photo-flash-line', {
+    opacity: 0,
+    duration: 0.5,
+    ease: 'power2.out',
+  }, 1.0);
+
+  // 5. Description text — scramble reveal
+  stTl.to('#statement-desc', {
+    opacity: 1,
+    duration: 0.01,
+  }, 1.2);
+
+  stTl.from('#statement-desc', {
+    y: 30,
+    duration: 0.8,
+    ease: 'power3.out',
+  }, 1.2);
+
+  // Text scramble effect
+  var descEl = document.getElementById('statement-desc');
+  if (descEl) {
+    var origHTML = descEl.innerHTML;
+    var scrambleChars = '!@#$%^&*()_+-=[]{}|;:<>?/~`01';
+    var scrambled = false;
+    ScrollTrigger.create({
+      trigger: '#photo-section',
+      start: 'top 65%',
+      onEnter: function() {
+        var textNodes = [];
+        function getTextNodes(el) {
+          el.childNodes.forEach(function(node) {
+            if (node.nodeType === 3 && node.textContent.trim()) textNodes.push(node);
+            else if (node.nodeType === 1) getTextNodes(node);
+          });
+        }
+        getTextNodes(descEl);
+        var iterations = 0;
+        var maxIterations = 8;
+        var origTexts = textNodes.map(function(n) { return n.textContent; });
+
+        function scrambleStep() {
+          iterations++;
+          var progress = iterations / maxIterations;
+          textNodes.forEach(function(node, idx) {
+            var orig = origTexts[idx];
+            var result = '';
+            for (var c = 0; c < orig.length; c++) {
+              if (orig[c] === ' ' || Math.random() < progress) {
+                result += orig[c];
+              } else {
+                result += scrambleChars[Math.floor(Math.random() * scrambleChars.length)];
+              }
+            }
+            node.textContent = result;
+          });
+          if (iterations < maxIterations) {
+            setTimeout(scrambleStep, 75);
+          } else {
+            textNodes.forEach(function(node, idx) { node.textContent = origTexts[idx]; });
+          }
+        }
+        setTimeout(scrambleStep, 1200);
+      }
+    });
+  }
+
+  // Photo parallax on scroll
+  gsap.to('#photo-inner', {
+    yPercent: -8,
+    ease: 'none',
+    scrollTrigger: {
+      trigger: '#photo-section',
+      start: 'top bottom',
+      end: 'bottom top',
+      scrub: true,
+    }
+  });
+})();
+
+// ==================
+// Silence — LETTER BY LETTER DROP + TREMOR
+// ==================
+(function() {
+  var silText = document.getElementById('silence-text');
+  if (!silText) return;
+
+  // Split into chars
+  var html = silText.innerHTML;
+  var newHtml = '';
+  var inTag = false;
+  var charIdx = 0;
+  for (var i = 0; i < html.length; i++) {
+    if (html[i] === '<') { inTag = true; newHtml += html[i]; continue; }
+    if (html[i] === '>') { inTag = false; newHtml += html[i]; continue; }
+    if (inTag) { newHtml += html[i]; continue; }
+    if (html[i] === ' ' || html[i] === '\n') { newHtml += html[i]; continue; }
+    newHtml += '<span class="silence-char" style="display:inline-block;opacity:0;transform:translateY(100px) rotate(' + (Math.random()*30-15) + 'deg);">' + html[i] + '</span>';
+    charIdx++;
+  }
+  silText.innerHTML = newHtml;
+
+  var chars = silText.querySelectorAll('.silence-char');
+
+  var silTremor = null;
+  ScrollTrigger.create({
+    trigger: '#silence',
+    start: 'top 60%',
+    onEnter: function() {
+      // Label fade
+      gsap.to('#silence-label', { opacity: 1, duration: 0.5, y: 0 });
+
+      // Each char drops in with stagger
+      gsap.to(chars, {
+        opacity: 1,
+        y: 0,
+        rotation: 0,
+        duration: 0.6,
+        ease: 'back.out(1.5)',
+        stagger: { amount: 0.8, from: 'center' },
+      });
+
+      // Screen flash on the word "PEOPLE"
+      setTimeout(function() {
+        gsap.to('#silence', {
+          backgroundColor: 'rgba(255,45,45,0.08)',
+          duration: 0.1,
+          yoyo: true,
+          repeat: 1,
+        });
+      }, 900);
+
+      // Sub label
+      gsap.to('#silence-sub', { opacity: 1, duration: 0.8, delay: 1.2 });
+
+      // Subtle continuous tremor on text
+      silTremor = gsap.to(silText, {
+        x: '+=1.5',
+        y: '+=0.5',
+        duration: 0.15,
+        repeat: -1,
+        yoyo: true,
+        ease: 'none',
+        delay: 1.5,
+      });
+    },
+    onLeaveBack: function() {
+      // Reset chars for replay
+      if (silTremor) silTremor.kill();
+      gsap.set(chars, { opacity: 0, y: 100, rotation: function() { return Math.random()*30-15; } });
+      gsap.set('#silence-label', { opacity: 0 });
+      gsap.set('#silence-sub', { opacity: 0 });
+      gsap.set(silText, { x: 0, y: 0 });
+    },
+    onEnterBack: function() {
+      gsap.to(chars, {
+        opacity: 1, y: 0, rotation: 0,
+        duration: 0.6,
+        ease: 'back.out(1.5)',
+        stagger: { amount: 0.8, from: 'center' },
+      });
+      gsap.to('#silence-label', { opacity: 1, duration: 0.5 });
+      gsap.to('#silence-sub', { opacity: 1, duration: 0.8, delay: 0.8 });
+      silTremor = gsap.to(silText, {
+        x: '+=1.5', y: '+=0.5', duration: 0.15,
+        repeat: -1, yoyo: true, ease: 'none', delay: 1.5,
+      });
+    }
+  });
+})();
+
+// ==================
+// Numbers — STAGGERED ENTRANCE in single block
+// ==================
+(function() {
+  var section = document.getElementById('numbers-section');
+  if (!section) return;
+
+  // Main timeline for section entrance
+  var numTl = gsap.timeline({
+    scrollTrigger: {
+      trigger: section,
+      start: 'top 65%',
+      toggleActions: 'play none none reverse',
+    }
+  });
+
+  // Each number card staggers in
+  ['#num-1', '#num-2', '#num-3'].forEach(function(sel, i) {
+    var el = document.querySelector(sel);
+    if (!el) return;
+    var flash = el.querySelector('.number-flash');
+
+    // Flash
+    if (flash) {
+      numTl.fromTo(flash, { opacity: 0 }, { opacity: 0.8, duration: 0.1 }, i * 0.2);
+      numTl.to(flash, { opacity: 0, duration: 0.6 }, i * 0.2 + 0.1);
+    }
+
+    // Card content slides up
+    numTl.from(el.querySelector('.relative.z-10'), {
+      y: 60,
+      opacity: 0,
+      duration: 0.7,
+      ease: 'power3.out',
+    }, i * 0.2);
+  });
+
+  // Consolidated ScrollTrigger for counters, bars, and dots
+  var numScrollTrigger = {
+    trigger: section,
+    start: 'top 65%',
+    toggleActions: 'play none none reverse',
+  };
+
+  // Counters
+  document.querySelectorAll('.stat-counter').forEach(function(counter) {
+    gsap.from(counter, {
+      textContent: 0,
+      duration: 1.8,
+      ease: 'power2.out',
+      snap: { textContent: 1 },
+      scrollTrigger: numScrollTrigger,
+      onComplete: function() {
+        counter.style.animation = 'counterGlow 0.6s ease-out 1';
+      }
+    });
+  });
+
+  // Progress bars fill
+  document.querySelectorAll('.num-bar').forEach(function(bar, i) {
+    gsap.to(bar, {
+      width: bar.dataset.width,
+      duration: 1.2,
+      delay: 0.5 + i * 0.2,
+      ease: 'power2.out',
+      scrollTrigger: numScrollTrigger,
+    });
+  });
+
+  // Market dots pop in
+  document.querySelectorAll('.num-dot').forEach(function(dot, i) {
+    gsap.to(dot, {
+      scale: 1,
+      duration: 0.4,
+      delay: 1.0 + i * 0.15,
+      ease: 'back.out(3)',
+      scrollTrigger: numScrollTrigger,
+    });
+  });
+})();
+
+// ==================
+// Portfolio — WIPE REVEAL + GLITCH
+// ==================
+(function() {
+  // Title split & slam
+  var pTitle = document.getElementById('portfolio-title');
+  if (pTitle) {
+    var text = pTitle.textContent;
+    pTitle.innerHTML = '';
+    for (var c = 0; c < text.length; c++) {
+      var s = document.createElement('span');
+      s.textContent = text[c];
+      s.style.display = 'inline-block';
+      s.style.opacity = '0';
+      s.className = 'portfolio-char';
+      pTitle.appendChild(s);
+    }
+
+    ScrollTrigger.create({
+      trigger: '#portfolio-section',
+      start: 'top 70%',
+      onEnter: function() {
+        gsap.to('.portfolio-char', {
+          opacity: 1,
+          duration: 0.03,
+          stagger: 0.05,
+        });
+        gsap.from('.portfolio-char', {
+          y: -60,
+          rotation: function() { return Math.random()*20 - 10; },
+          scale: 1.5,
+          duration: 0.4,
+          ease: 'back.out(2)',
+          stagger: 0.05,
+        });
+      },
+      onLeaveBack: function() {
+        gsap.set('.portfolio-char', { opacity: 0, y: -60 });
+      },
+      onEnterBack: function() {
+        gsap.to('.portfolio-char', { opacity: 1, y: 0, duration: 0.3, stagger: 0.03 });
+      }
+    });
+  }
+
+  // Portfolio rows — slide from alternating sides with clip-path wipe
+  document.querySelectorAll('.portfolio-row').forEach(function(row, i) {
+    var tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: row,
+        start: 'top 85%',
+        toggleActions: 'play none none reverse',
+      }
+    });
+
+    // Clip-path wipe reveal
+    tl.fromTo(row,
+      { clipPath: 'inset(0 100% 0 0)' },
+      { clipPath: 'inset(0 0% 0 0)', duration: 0.8, ease: 'power3.inOut' }
+    );
+
+    // Content slides from side
+    var content = row.querySelector('.max-w-6xl');
+    if (content) {
+      tl.from(content, {
+        x: i % 2 === 0 ? -40 : 40,
+        opacity: 0,
+        duration: 0.6,
+        ease: 'power3.out',
+      }, 0.2);
+    }
+
+    // Number glitch on enter
+    var num = row.querySelector('.font-display');
+    if (num) {
+      tl.from(num, {
+        skewX: i % 2 === 0 ? -8 : 8,
+        duration: 0.4,
+        ease: 'power2.out',
+      }, 0.3);
+    }
+  });
+})();
+
+// ==================
+// Scroll-scrubbed text — GLOW + SCALE
+// ==================
+const scrubWords = gsap.utils.toArray('#scrub-philosophy .scrub-word');
+const scrubTL = gsap.timeline({
+  scrollTrigger: {
+    trigger: '#philosophy-section',
+    start: 'top 60%',
+    end: 'bottom 40%',
+    scrub: 1,
+  }
+});
+scrubWords.forEach((w, i) => {
+  scrubTL.to(w, {
+    color: '#FF2D2D',
+    scale: 1.05,
+    textShadow: '0 0 30px rgba(255,45,45,0.5)',
+    duration: 0.1,
+    onComplete: function() { w.classList.add('lit'); }
+  }, i * 0.04);
+});
+
+// ==================
+// CTA — LETTERS EXPLODE IN + RED PULSE
+// ==================
+(function() {
+  var ctaChars = document.querySelectorAll('.cta-char');
+  if (!ctaChars.length) return;
+
+  function animateCTAIn() {
+    gsap.to('#cta-label', { opacity: 1, duration: 0.5 });
+    gsap.to('#cta-bg', { backgroundColor: 'rgba(255,45,45,0.08)', duration: 0.15 });
+    gsap.to('#cta-bg', { backgroundColor: 'rgba(255,45,45,0.03)', duration: 1, delay: 0.15 });
+
+    ctaChars.forEach(function(ch, i) {
+      var angle = (Math.random() - 0.5) * 360;
+      var dist = 200 + Math.random() * 300;
+      var startX = Math.cos(angle * Math.PI/180) * dist;
+      var startY = Math.sin(angle * Math.PI/180) * dist;
+
+      gsap.set(ch, { x: startX, y: startY, rotation: Math.random()*180-90, scale: 0 });
+      gsap.to(ch, {
+        opacity: 1, x: 0, y: 0, rotation: 0, scale: 1,
+        duration: 0.7 + Math.random() * 0.3,
+        delay: i * 0.06,
+        ease: 'back.out(1.5)',
+      });
+    });
+
+    setTimeout(function() {
+      gsap.to('#cta-text', {
+        textShadow: '0 0 60px rgba(255,45,45,0.6), 0 0 120px rgba(255,45,45,0.3)',
+        duration: 0.3, yoyo: true, repeat: 1,
+      });
+    }, 1000);
+  }
+
+  function resetCTA() {
+    gsap.set(ctaChars, { opacity: 0, scale: 0 });
+    gsap.set('#cta-label', { opacity: 0 });
+    gsap.to('#cta-bg', { backgroundColor: 'rgba(255,45,45,0)', duration: 0.3 });
+    gsap.set('#cta-text', { textShadow: 'none' });
+  }
+
+  ScrollTrigger.create({
+    trigger: '#cta-section',
+    start: 'top 50%',
+    onEnter: animateCTAIn,
+    onEnterBack: animateCTAIn,
+    onLeaveBack: function() {
+      resetCTA();
+      gsap.to('#cta-bg', { backgroundColor: 'rgba(255,45,45,0)', duration: 0.5 });
+    }
+  });
+})();
+
+// ==================
+// Magnetic buttons
+// ==================
+document.querySelectorAll('.magnetic').forEach(btn => {
+  btn.addEventListener('mousemove', e => {
+    const r = btn.getBoundingClientRect();
+    gsap.to(btn, {
+      x: (e.clientX - r.left - r.width/2) * 0.3,
+      y: (e.clientY - r.top - r.height/2) * 0.3,
+      duration: 0.3,
+      ease: 'power2.out'
+    });
+  });
+  btn.addEventListener('mouseleave', () => {
+    gsap.to(btn, { x: 0, y: 0, duration: 0.6, ease: 'elastic.out(1, 0.3)' });
+  });
+});
+
+// ==================
+// Scroll velocity skew — global on sections
+// ==================
+const skewProxy = { skew: 0 };
+const clamp = gsap.utils.clamp(-4, 4);
+ScrollTrigger.create({
+  onUpdate: self => {
+    const skew = clamp(self.getVelocity() / -300);
+    if (Math.abs(skew) > Math.abs(skewProxy.skew)) {
+      skewProxy.skew = skew;
+    }
+    gsap.to(skewProxy, {
+      skew: 0,
+      duration: 0.8,
+      ease: 'power3',
+      overwrite: true,
+      onUpdate: () => {
+        document.querySelectorAll('.portfolio-row, .number-slide').forEach(el => {
+          el.style.transform = `skewY(${skewProxy.skew}deg)`;
+        });
+      }
+    });
+  }
+});
+
+// ==================
+// Decorative elements — parallax drift
+// ==================
+document.querySelectorAll('.deco-cross, .deco-dot').forEach(function(el) {
+  var speed = 0.3 + Math.random() * 0.5;
+  var dir = Math.random() > 0.5 ? 1 : -1;
+  gsap.to(el, {
+    y: dir * 60 * speed,
+    x: dir * 20 * speed,
+    ease: 'none',
+    scrollTrigger: {
+      trigger: el.closest('section') || el.parentElement,
+      start: 'top bottom',
+      end: 'bottom top',
+      scrub: true,
+    }
+  });
+});
+
+// Section dividers — draw on scroll
+document.querySelectorAll('.section-divider').forEach(function(div) {
+  gsap.from(div, {
+    scaleX: 0,
+    duration: 0.8,
+    ease: 'power3.inOut',
+    scrollTrigger: {
+      trigger: div,
+      start: 'top 90%',
+    }
+  });
+});
+
+// Ghost text parallax
+document.querySelectorAll('[style*="text-stroke"]').forEach(function(ghost) {
+  gsap.to(ghost, {
+    yPercent: -15,
+    ease: 'none',
+    scrollTrigger: {
+      trigger: ghost.closest('section') || ghost.closest('div'),
+      start: 'top bottom',
+      end: 'bottom top',
+      scrub: true,
+    }
+  });
+});
+
+</script>
+</body>
+</html>
