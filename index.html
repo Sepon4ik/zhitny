@@ -103,7 +103,7 @@ tailwind.config = {
     clip-path: inset(0 0 60% 0);
     transform: translate(-3px, -2px);
     opacity: 0;
-    animation: glitchBefore 12s infinite linear alternate-reverse;
+    animation: glitchBefore 8s infinite linear alternate-reverse;
     will-change: opacity, transform;
   }
   .glitch::after {
@@ -111,7 +111,7 @@ tailwind.config = {
     clip-path: inset(60% 0 0 0);
     transform: translate(3px, 2px);
     opacity: 0;
-    animation: glitchAfter 12s infinite linear alternate-reverse;
+    animation: glitchAfter 8s infinite linear alternate-reverse;
     will-change: opacity, transform;
   }
   @keyframes glitchBefore {
@@ -368,6 +368,43 @@ tailwind.config = {
     z-index: 9997;
     opacity: 0;
     box-shadow: inset 0 0 150px 60px rgba(0,0,0,0.6);
+  }
+
+  /* Electric shock — CSS class toggled by JS, no GSAP overhead */
+  .glitch-kick::before {
+    animation: none !important;
+    opacity: 0.9 !important;
+    transform: translate(-5px, -2px) !important;
+    color: #00FFFF !important;
+    clip-path: inset(0 0 40% 0) !important;
+    transition: opacity 0.4s ease-out, transform 0.4s ease-out;
+  }
+  .glitch-kick::after {
+    animation: none !important;
+    opacity: 0.7 !important;
+    transform: translate(4px, 2px) !important;
+    color: #FF2D2D !important;
+    clip-path: inset(40% 0 0 0) !important;
+    transition: opacity 0.4s ease-out, transform 0.4s ease-out;
+  }
+  /* Snare — sharper, tighter electric split */
+  .glitch-snare::before {
+    animation: none !important;
+    opacity: 0.7 !important;
+    transform: translate(3px, 1px) !important;
+    color: #00FFFF !important;
+    transition: opacity 0.25s ease-out, transform 0.25s ease-out;
+  }
+  .glitch-snare::after {
+    animation: none !important;
+    opacity: 0.5 !important;
+    transform: translate(-2px, -1px) !important;
+    transition: opacity 0.25s ease-out, transform 0.25s ease-out;
+  }
+  /* Return to idle — smooth fade back to CSS animation */
+  .glitch:not(.glitch-kick):not(.glitch-snare)::before,
+  .glitch:not(.glitch-kick):not(.glitch-snare)::after {
+    /* default animation takes over */
   }
 
   /* ===== PHOTO ===== */
@@ -1152,7 +1189,7 @@ window.onYouTubeIframeAPIReady = function() {
 };
 
 // ==================
-// BASS SYSTEM — optimized: CSS classes + minimal GSAP
+// BASS SYSTEM — CSS class toggles + minimal GSAP for overlay only
 // ==================
 (function() {
   var heroName = document.getElementById('hero-name');
@@ -1166,8 +1203,9 @@ window.onYouTubeIframeAPIReady = function() {
   var count = 0;
   var running = false;
   var bassInterval;
+  var glitchTimer = null;
 
-  // Reusable single timeline for kick (avoids creating new tweens every beat)
+  // Only 2 reusable timelines for screen-level effects
   var kickTL = gsap.timeline({ paused: true });
   kickTL.fromTo(overlay, { opacity: 0.6 }, { opacity: 0, duration: 0.45, ease: 'power3.in' }, 0);
   kickTL.fromTo(vignette, { opacity: 0.4 }, { opacity: 0, duration: 0.5, ease: 'power2.out' }, 0);
@@ -1177,12 +1215,34 @@ window.onYouTubeIframeAPIReady = function() {
   snareTL.fromTo(heroName, { x: 2 }, { x: 0, duration: 0.15, ease: 'power2.out' }, 0);
   snareTL.fromTo(vignette, { opacity: 0.15 }, { opacity: 0, duration: 0.3, ease: 'power2.out' }, 0);
 
+  function clearGlitch() {
+    heroName.classList.remove('glitch-kick', 'glitch-snare');
+  }
+
+  function kick() {
+    kickTL.invalidate().restart();
+    // Electric shock — blue layer splits out via CSS class (zero JS overhead)
+    clearGlitch();
+    heroName.classList.add('glitch-kick');
+    clearTimeout(glitchTimer);
+    glitchTimer = setTimeout(clearGlitch, 350);
+  }
+
+  function snare() {
+    snareTL.invalidate().restart();
+    // Tighter electric snap
+    clearGlitch();
+    heroName.classList.add('glitch-snare');
+    clearTimeout(glitchTimer);
+    glitchTimer = setTimeout(clearGlitch, 200);
+  }
+
   function beatLoop() {
     count++;
     var pos = count % 4;
-    if (pos === 1) { kickTL.invalidate().restart(); }
-    else if (pos === 3) { snareTL.invalidate().restart(); }
-    // ghost beats: no animation (saves CPU)
+    if (pos === 1) kick();
+    else if (pos === 3) snare();
+    // ghost on 2,4: no animation = no CPU cost
   }
 
   var bassObserver = new IntersectionObserver(function(entries) {
@@ -1192,6 +1252,7 @@ window.onYouTubeIframeAPIReady = function() {
     } else if (!entries[0].isIntersecting && running) {
       running = false;
       clearInterval(bassInterval);
+      clearGlitch();
       gsap.set(heroName, { scaleY: 1, scaleX: 1, x: 0 });
       gsap.set(overlay, { opacity: 0 });
       gsap.set(vignette, { opacity: 0 });
