@@ -39,8 +39,7 @@ tailwind.config = {
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.18/dist/lenis.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/split-type@0.3.4/umd/index.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/vanta/dist/vanta.net.min.js"></script>
+<!-- Three.js + Vanta loaded lazily as fallback only -->
 
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -53,15 +52,17 @@ tailwind.config = {
   }
   ::selection { background: #FF2D2D; color: #000; }
 
-  /* Grain */
+  /* Grain — GPU layer to avoid repaints */
   body::before {
     content: '';
     position: fixed;
     inset: 0;
     pointer-events: none;
     z-index: 9999;
-    opacity: 0.07;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    opacity: 0.05;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    will-change: transform;
+    transform: translateZ(0);
   }
 
   /* ===== INTRO FLASH ===== */
@@ -102,7 +103,7 @@ tailwind.config = {
     clip-path: inset(0 0 60% 0);
     transform: translate(-3px, -2px);
     opacity: 0;
-    animation: glitchBefore 6s infinite linear alternate-reverse;
+    animation: glitchBefore 12s infinite linear alternate-reverse;
     will-change: opacity, transform;
   }
   .glitch::after {
@@ -110,7 +111,7 @@ tailwind.config = {
     clip-path: inset(60% 0 0 0);
     transform: translate(3px, 2px);
     opacity: 0;
-    animation: glitchAfter 6s infinite linear alternate-reverse;
+    animation: glitchAfter 12s infinite linear alternate-reverse;
     will-change: opacity, transform;
   }
   @keyframes glitchBefore {
@@ -437,7 +438,7 @@ tailwind.config = {
     height: 200%;
     top: -50%;
     background: linear-gradient(90deg, transparent 0%, rgba(255,45,45,0.03) 50%, transparent 100%);
-    animation: spotlightMove 12s ease-in-out infinite alternate;
+    animation: spotlightMove 25s ease-in-out infinite alternate;
     will-change: transform;
   }
   @keyframes spotlightMove {
@@ -716,9 +717,6 @@ tailwind.config = {
     <div class="absolute inset-0 bg-accent/8 mix-blend-color"></div>
     <div class="absolute inset-0 bg-gradient-to-t from-[#0A0A0A] via-transparent to-[#0A0A0A]"></div>
   </div>
-  <div class="concert-smoke"></div>
-  <div class="spotlight-sweep"></div>
-  <div class="stage-glow"></div>
   <div class="text-center px-6 relative z-10">
     <p class="label-mono mb-6" id="silence-label" style="opacity:0;">[ philosophy ]</p>
     <p class="font-display text-6xl md:text-8xl lg:text-[10rem] text-warm leading-[0.85] tracking-[-0.02em]" id="silence-text">
@@ -757,10 +755,6 @@ tailwind.config = {
 <!-- NUMBERS — one dense block, not 3 empty screens    -->
 <!-- ================================================ -->
 <section id="numbers-section" class="relative py-24 md:py-32 overflow-hidden" style="background: linear-gradient(180deg, #0A0A0A 0%, #0F0808 30%, #0F0808 70%, #0A0A0A 100%);">
-  <div class="laser-grid"></div>
-  <div class="spotlight-sweep"></div>
-  <div class="concert-smoke"></div>
-
   <!-- Ghost text behind -->
   <span class="font-display text-[12rem] md:text-[22rem] leading-none absolute -top-[2rem] right-[5%] pointer-events-none select-none desktop-only" style="color:transparent; -webkit-text-stroke:1px rgba(255,45,45,0.04);">IMPACT</span>
 
@@ -865,8 +859,6 @@ tailwind.config = {
 <!-- PORTFOLIO — setlist rows                          -->
 <!-- ================================================ -->
 <section class="relative py-24 overflow-hidden" id="portfolio-section" style="background: linear-gradient(180deg, #0A0A0A 0%, #0D0808 50%, #0A0A0A 100%);">
-  <div class="concert-smoke"></div>
-  <div class="crowd-dots"></div>
   <!-- Big ghost text -->
   <span class="font-display text-[15rem] md:text-[25rem] leading-none absolute -top-[5rem] left-1/2 -translate-x-1/2 pointer-events-none select-none desktop-only" style="color:transparent; -webkit-text-stroke:1px rgba(255,45,45,0.03);">SETLIST</span>
   <div class="px-6 md:px-12 mb-16 relative z-10">
@@ -958,8 +950,6 @@ tailwind.config = {
 <!-- PHILOSOPHY — scrolling text scrub                 -->
 <!-- ================================================ -->
 <section class="relative py-32 md:py-48 px-6 overflow-hidden" id="philosophy-section">
-  <div class="spotlight-sweep"></div>
-  <div class="stage-glow" style="bottom:-20%; opacity:0.5;"></div>
   <!-- Ghost quote marks -->
   <span class="font-display text-[20rem] md:text-[35rem] leading-none absolute -left-[5%] -top-[10%] pointer-events-none select-none desktop-only" style="color:transparent; -webkit-text-stroke:1px rgba(255,45,45,0.03);">"</span>
   <span class="font-display text-[20rem] md:text-[35rem] leading-none absolute -right-[5%] -bottom-[15%] pointer-events-none select-none desktop-only" style="color:transparent; -webkit-text-stroke:1px rgba(255,45,45,0.03);">"</span>
@@ -1012,10 +1002,6 @@ tailwind.config = {
 <!-- CTA — последний трек                              -->
 <!-- ================================================ -->
 <section class="relative min-h-[80vh] flex items-center justify-center overflow-hidden" id="cta-section">
-
-  <div class="concert-smoke"></div>
-  <div class="laser-grid" style="opacity:0.05;"></div>
-  <div class="stage-glow"></div>
 
   <!-- Background flash on scroll -->
   <div class="absolute inset-0 bg-accent/0 transition-colors duration-700 z-0" id="cta-bg"></div>
@@ -1166,138 +1152,39 @@ window.onYouTubeIframeAPIReady = function() {
 };
 
 // ==================
-// BASS SYSTEM — hits the whole screen, not just letters
+// BASS SYSTEM — optimized: CSS classes + minimal GSAP
 // ==================
 (function() {
   var heroName = document.getElementById('hero-name');
   var hero = document.getElementById('hero');
   var overlay = document.getElementById('bass-overlay');
   var vignette = document.getElementById('bass-vignette');
-  var ytOverlay = document.querySelector('#yt-container .bg-gradient-to-b');
-  var waveBars = document.querySelectorAll('.wave-bar');
   if (!heroName || !hero) return;
 
   var bpm = 128;
-  var beat = 60000 / bpm; // ~468ms
+  var beat = 60000 / bpm;
   var count = 0;
   var running = false;
+  var bassInterval;
 
-  function kick() {
-    // === SCREEN: red flash from bottom (like pyro) ===
-    if (overlay) {
-      gsap.fromTo(overlay,
-        { opacity: 0.7 },
-        { opacity: 0, duration: 0.5, ease: 'power3.in' }
-      );
-    }
+  // Reusable single timeline for kick (avoids creating new tweens every beat)
+  var kickTL = gsap.timeline({ paused: true });
+  kickTL.fromTo(overlay, { opacity: 0.6 }, { opacity: 0, duration: 0.45, ease: 'power3.in' }, 0);
+  kickTL.fromTo(vignette, { opacity: 0.4 }, { opacity: 0, duration: 0.5, ease: 'power2.out' }, 0);
+  kickTL.fromTo(heroName, { scaleY: 0.97, scaleX: 1.01 }, { scaleY: 1, scaleX: 1, duration: 0.45, ease: 'elastic.out(1, 0.4)' }, 0);
 
-    // === SCREEN: vignette contracts (tunnel vision from bass pressure) ===
-    if (vignette) {
-      gsap.fromTo(vignette,
-        { opacity: 0.5 },
-        { opacity: 0, duration: 0.6, ease: 'power2.out' }
-      );
-    }
-
-    // === HERO: entire section pushes down then rebounds ===
-    gsap.to(hero, {
-      y: 3, duration: 0.06, ease: 'power4.out',
-      onComplete: function() {
-        gsap.to(hero, { y: 0, duration: 0.4, ease: 'elastic.out(1, 0.4)' });
-      }
-    });
-
-    // === NAME: compress + bloom ===
-    gsap.to(heroName, {
-      scaleY: 0.97, scaleX: 1.01, duration: 0.05, ease: 'power4.out',
-      onComplete: function() {
-        gsap.to(heroName, { scaleY: 1, scaleX: 1, duration: 0.5, ease: 'elastic.out(1, 0.3)' });
-      }
-    });
-
-    // === NAME: text-shadow bloom — SLOW decay like real light ===
-    gsap.fromTo(heroName,
-      { textShadow: '0 0 60px rgba(255,45,45,0.8), 0 0 120px rgba(255,45,45,0.4), 0 4px 20px rgba(0,0,0,0.5)' },
-      { textShadow: '0 0 0px rgba(255,45,45,0), 0 0 0px rgba(255,45,45,0), 0 0px 0px rgba(0,0,0,0)', duration: 1.2, ease: 'power2.in' }
-    );
-
-    // === VIDEO OVERLAY: darken on impact, brighten after ===
-    if (ytOverlay) {
-      gsap.to(ytOverlay, { opacity: 0.9, duration: 0.05 });
-      gsap.to(ytOverlay, { opacity: 1, duration: 0.4, delay: 0.05 });
-    }
-
-    // === WAVE BARS: explode up ===
-    waveBars.forEach(function(bar) {
-      gsap.fromTo(bar,
-        { height: (18 + Math.random() * 18) + 'px', opacity: 1 },
-        { height: (4 + Math.random() * 4) + 'px', opacity: 0.3, duration: 0.4, ease: 'power2.out' }
-      );
-    });
-  }
-
-  function snare() {
-    // === Quick white flash on letters only ===
-    gsap.fromTo(heroName,
-      { color: '#FFFFFF', textShadow: '0 0 20px rgba(255,255,255,0.4)' },
-      { color: '#F0EDE8', textShadow: '0 0 0px rgba(255,255,255,0)', duration: 0.5, ease: 'power2.in' }
-    );
-
-    // === Micro-shake (like snare rattle) ===
-    gsap.to(heroName, {
-      x: 2, duration: 0.03,
-      onComplete: function() {
-        gsap.to(heroName, {
-          x: -1.5, duration: 0.03,
-          onComplete: function() {
-            gsap.to(heroName, { x: 0, duration: 0.15, ease: 'power2.out' });
-          }
-        });
-      }
-    });
-
-    // === Vignette light pulse ===
-    if (vignette) {
-      gsap.fromTo(vignette, { opacity: 0.2 }, { opacity: 0, duration: 0.35, ease: 'power2.out' });
-    }
-
-    // === Wave bars: medium hit ===
-    waveBars.forEach(function(bar) {
-      gsap.fromTo(bar,
-        { height: (10 + Math.random() * 10) + 'px', opacity: 0.8 },
-        { height: (4 + Math.random() * 4) + 'px', opacity: 0.3, duration: 0.3, ease: 'power2.out' }
-      );
-    });
-  }
-
-  function ghost() {
-    // === Barely perceptible breathing ===
-    gsap.to(heroName, {
-      scaleY: 1.002, duration: 0.08,
-      onComplete: function() {
-        gsap.to(heroName, { scaleY: 1, duration: 0.25, ease: 'power1.out' });
-      }
-    });
-
-    // Wave bars: tiny twitch
-    waveBars.forEach(function(bar) {
-      gsap.fromTo(bar,
-        { height: (5 + Math.random() * 5) + 'px', opacity: 0.5 },
-        { height: (4 + Math.random() * 3) + 'px', opacity: 0.3, duration: 0.2, ease: 'power1.out' }
-      );
-    });
-  }
+  var snareTL = gsap.timeline({ paused: true });
+  snareTL.fromTo(heroName, { x: 2 }, { x: 0, duration: 0.15, ease: 'power2.out' }, 0);
+  snareTL.fromTo(vignette, { opacity: 0.15 }, { opacity: 0, duration: 0.3, ease: 'power2.out' }, 0);
 
   function beatLoop() {
     count++;
     var pos = count % 4;
-
-    if (pos === 1) kick();      // KICK on 1
-    else if (pos === 3) snare(); // SNARE on 3
-    else ghost();                // ghost on 2, 4
+    if (pos === 1) { kickTL.invalidate().restart(); }
+    else if (pos === 3) { snareTL.invalidate().restart(); }
+    // ghost beats: no animation (saves CPU)
   }
 
-  // Only pulse while hero is in view
   var bassObserver = new IntersectionObserver(function(entries) {
     if (entries[0].isIntersecting && !running) {
       running = true;
@@ -1305,20 +1192,13 @@ window.onYouTubeIframeAPIReady = function() {
     } else if (!entries[0].isIntersecting && running) {
       running = false;
       clearInterval(bassInterval);
-      // Reset everything clean
-      gsap.set(heroName, { scaleY: 1, scaleX: 1, x: 0, color: '#F0EDE8', textShadow: 'none' });
-      gsap.set(hero, { y: 0 });
-      if (overlay) gsap.set(overlay, { opacity: 0 });
-      if (vignette) gsap.set(vignette, { opacity: 0 });
+      gsap.set(heroName, { scaleY: 1, scaleX: 1, x: 0 });
+      gsap.set(overlay, { opacity: 0 });
+      gsap.set(vignette, { opacity: 0 });
     }
   }, { threshold: 0.3 });
 
-  var bassInterval;
-
-  // Start after intro flash
-  setTimeout(function() {
-    bassObserver.observe(hero);
-  }, 2800);
+  setTimeout(function() { bassObserver.observe(hero); }, 2800);
 })();
 
 // Sound toggle
@@ -1339,29 +1219,28 @@ function toggleSound() {
 }
 
 // ==================
-// Vanta NET — only init as fallback, wait to see if YT loads
+// Vanta NET — lazy load only if YouTube fails after 5s
 // ==================
 var vantaInitTimeout = setTimeout(function() {
-  // If YouTube hasn't loaded after 4 seconds, show Vanta
   var ytContainer = document.getElementById('yt-container');
   var ytIframe = ytContainer ? ytContainer.querySelector('iframe') : null;
-  if (!ytIframe && typeof VANTA !== 'undefined') {
-    try {
-      VANTA.NET({
-        el: '#vanta-hero',
-        mouseControls: true,
-        touchControls: false,
-        gyroControls: false,
-        color: 0xFF2D2D,
-        backgroundColor: 0x0A0A0A,
-        points: 6,
-        maxDistance: 25,
-        spacing: 20,
-        showDots: true
-      });
-    } catch(e) {}
+  if (!ytIframe) {
+    // Load Three.js + Vanta only as fallback
+    var s1 = document.createElement('script');
+    s1.src = 'https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js';
+    s1.onload = function() {
+      var s2 = document.createElement('script');
+      s2.src = 'https://cdn.jsdelivr.net/npm/vanta/dist/vanta.net.min.js';
+      s2.onload = function() {
+        try {
+          VANTA.NET({ el:'#vanta-hero', mouseControls:false, touchControls:false, gyroControls:false, color:0xFF2D2D, backgroundColor:0x0A0A0A, points:5, maxDistance:22, spacing:22, showDots:true });
+        } catch(e) {}
+      };
+      document.head.appendChild(s2);
+    };
+    document.head.appendChild(s1);
   }
-}, 4000);
+}, 5000);
 
 // ==================
 // Hero entrance
