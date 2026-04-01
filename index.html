@@ -262,6 +262,13 @@ tailwind.config = {
     0%, 100% { height: 10px; opacity: 0.3; }
     50% { height: 30px; opacity: 1; }
   }
+  /* Wave bars explode on beat */
+  .wave-hit .wave-bar {
+    animation: none !important;
+    height: 35px !important;
+    opacity: 1 !important;
+    transition: height 0.35s ease-out, opacity 0.35s ease-out;
+  }
 
   /* ===== SILENCE LETTER SPLIT ===== */
   .silence-char {
@@ -370,41 +377,48 @@ tailwind.config = {
     box-shadow: inset 0 0 150px 60px rgba(0,0,0,0.6);
   }
 
-  /* Electric shock — CSS class toggled by JS, no GSAP overhead */
+  /* KICK — full electric slam: blue layer rips apart */
   .glitch-kick::before {
     animation: none !important;
-    opacity: 0.9 !important;
-    transform: translate(-5px, -2px) !important;
+    opacity: 1 !important;
+    transform: translate(-8px, -4px) skewX(3deg) !important;
     color: #00FFFF !important;
-    clip-path: inset(0 0 40% 0) !important;
-    transition: opacity 0.4s ease-out, transform 0.4s ease-out;
+    clip-path: inset(0 0 35% 0) !important;
+    transition: opacity 0.45s ease-out, transform 0.45s ease-out;
   }
   .glitch-kick::after {
     animation: none !important;
-    opacity: 0.7 !important;
-    transform: translate(4px, 2px) !important;
+    opacity: 0.8 !important;
+    transform: translate(7px, 3px) skewX(-2deg) !important;
     color: #FF2D2D !important;
-    clip-path: inset(40% 0 0 0) !important;
-    transition: opacity 0.4s ease-out, transform 0.4s ease-out;
+    clip-path: inset(35% 0 0 0) !important;
+    transition: opacity 0.45s ease-out, transform 0.45s ease-out;
   }
-  /* Snare — sharper, tighter electric split */
+  /* SNARE — tight horizontal rip */
   .glitch-snare::before {
     animation: none !important;
-    opacity: 0.7 !important;
-    transform: translate(3px, 1px) !important;
+    opacity: 0.85 !important;
+    transform: translate(5px, -1px) skewX(-2deg) !important;
     color: #00FFFF !important;
-    transition: opacity 0.25s ease-out, transform 0.25s ease-out;
+    clip-path: inset(20% 0 20% 0) !important;
+    transition: opacity 0.2s ease-out, transform 0.2s ease-out;
   }
   .glitch-snare::after {
     animation: none !important;
-    opacity: 0.5 !important;
-    transform: translate(-2px, -1px) !important;
-    transition: opacity 0.25s ease-out, transform 0.25s ease-out;
+    opacity: 0.6 !important;
+    transform: translate(-4px, 1px) skewX(1.5deg) !important;
+    color: #FF2D2D !important;
+    transition: opacity 0.2s ease-out, transform 0.2s ease-out;
   }
-  /* Return to idle — smooth fade back to CSS animation */
-  .glitch:not(.glitch-kick):not(.glitch-snare)::before,
-  .glitch:not(.glitch-kick):not(.glitch-snare)::after {
-    /* default animation takes over */
+
+  /* Kick glow on name — text-shadow via CSS, not GSAP */
+  .glitch-kick {
+    text-shadow: 0 0 40px rgba(255,45,45,0.6), 0 0 80px rgba(255,45,45,0.3), 0 0 10px rgba(0,255,255,0.2) !important;
+    transition: text-shadow 0.5s ease-out;
+  }
+  .glitch-snare {
+    text-shadow: 0 0 15px rgba(0,255,255,0.3), 0 0 30px rgba(255,255,255,0.15) !important;
+    transition: text-shadow 0.3s ease-out;
   }
 
   /* ===== PHOTO ===== */
@@ -1205,27 +1219,41 @@ window.onYouTubeIframeAPIReady = function() {
   var bassInterval;
   var glitchTimer = null;
 
-  // Only 2 reusable timelines for screen-level effects
+  // KICK — heavy slam: compress hard, bounce fat, red flash
   var kickTL = gsap.timeline({ paused: true });
-  kickTL.fromTo(overlay, { opacity: 0.6 }, { opacity: 0, duration: 0.45, ease: 'power3.in' }, 0);
-  kickTL.fromTo(vignette, { opacity: 0.4 }, { opacity: 0, duration: 0.5, ease: 'power2.out' }, 0);
-  kickTL.fromTo(heroName, { scaleY: 0.97, scaleX: 1.01 }, { scaleY: 1, scaleX: 1, duration: 0.45, ease: 'elastic.out(1, 0.4)' }, 0);
+  kickTL.fromTo(overlay, { opacity: 0.7 }, { opacity: 0, duration: 0.5, ease: 'power3.in' }, 0);
+  kickTL.fromTo(vignette, { opacity: 0.5 }, { opacity: 0, duration: 0.55, ease: 'power2.out' }, 0);
+  // Slam down hard then elastic bounce back up
+  kickTL.fromTo(heroName,
+    { scaleY: 0.92, scaleX: 1.03, y: 6 },
+    { scaleY: 1, scaleX: 1, y: 0, duration: 0.6, ease: 'elastic.out(1.1, 0.3)' }, 0);
+  // Whole hero section pushes down
+  kickTL.fromTo(hero, { y: 4 }, { y: 0, duration: 0.5, ease: 'elastic.out(1, 0.4)' }, 0);
 
+  // SNARE — sharp whip-crack: horizontal shake + snap back
   var snareTL = gsap.timeline({ paused: true });
-  snareTL.fromTo(heroName, { x: 2 }, { x: 0, duration: 0.15, ease: 'power2.out' }, 0);
-  snareTL.fromTo(vignette, { opacity: 0.15 }, { opacity: 0, duration: 0.3, ease: 'power2.out' }, 0);
+  snareTL.fromTo(heroName,
+    { x: 4, skewX: -1.5, scaleX: 0.98 },
+    { x: 0, skewX: 0, scaleX: 1, duration: 0.25, ease: 'elastic.out(1, 0.35)' }, 0);
+  snareTL.fromTo(vignette, { opacity: 0.25 }, { opacity: 0, duration: 0.35, ease: 'power2.out' }, 0);
+  snareTL.fromTo(overlay, { opacity: 0.2 }, { opacity: 0, duration: 0.25, ease: 'power2.out' }, 0);
+
+  var waveWrap = document.querySelector('.flex.items-end.justify-end');
+  var waveTimer = null;
 
   function clearGlitch() {
     heroName.classList.remove('glitch-kick', 'glitch-snare');
+    if (waveWrap) waveWrap.classList.remove('wave-hit');
   }
 
   function kick() {
     kickTL.invalidate().restart();
-    // Electric shock — blue layer splits out via CSS class (zero JS overhead)
+    // Electric shock — blue layer rips apart via CSS class
     clearGlitch();
     heroName.classList.add('glitch-kick');
+    if (waveWrap) waveWrap.classList.add('wave-hit');
     clearTimeout(glitchTimer);
-    glitchTimer = setTimeout(clearGlitch, 350);
+    glitchTimer = setTimeout(clearGlitch, 400);
   }
 
   function snare() {
@@ -1233,8 +1261,9 @@ window.onYouTubeIframeAPIReady = function() {
     // Tighter electric snap
     clearGlitch();
     heroName.classList.add('glitch-snare');
+    if (waveWrap) waveWrap.classList.add('wave-hit');
     clearTimeout(glitchTimer);
-    glitchTimer = setTimeout(clearGlitch, 200);
+    glitchTimer = setTimeout(clearGlitch, 220);
   }
 
   function beatLoop() {
